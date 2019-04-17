@@ -6,34 +6,42 @@ import {
 } from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
+import {ChartDataService} from '../../services/chart-data.service';
 
 @Component({
   selector: 'app-amcharts4',
   templateUrl: './amcharts4.component.html',
   styleUrls: ['./amcharts4.component.css']
 })
-export class Amcharts4Component implements OnChanges, OnDestroy {
-  @Input() data: any;
+export class Amcharts4Component implements AfterViewInit, OnDestroy {
   public chartData: any;
   private chart: am4charts.XYChart;
+  public dataPointsCount = 100;
   public renderTimeResult = '';
   public result = 0;
 
-  constructor(private zone: NgZone, private cdRef: ChangeDetectorRef) {
+  constructor(private zone: NgZone, private cdRef: ChangeDetectorRef, private chartDataService: ChartDataService) {
+    this.getNewData();
   }
 
-  ngOnChanges(changes): void {
-    if (changes.data && changes.data && changes.data.currentValue) {
-      this.chartData = changes.data.currentValue;
-      console.log('this.chartData: ', this.chartData)
+  ngAfterViewInit(): void {
+    console.log('this.chartData: ', this.chartData);
+    if (this.chartData) {
       this.renderChart();
     }
   }
 
+  public getNewData() {
+    this.chartData = this.chartDataService.generateNewData(this.dataPointsCount);
+    this.cdRef.detectChanges();
+    this.renderChart();
+  }
+
   public renderChart(): void {
+    console.log('RENDER AM 4444444');
     this.zone.runOutsideAngular(() => {
       this.chart = am4core.create('chartdiv-4', am4charts.XYChart);
-      this.chart.data = this.chartData;
+      this.chart.dataProvider = this.chartData;
 
       const startRenderTime = new Date();
       this.chart.events.on('ready', () => {

@@ -1,27 +1,33 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, OnInit, Output} from '@angular/core';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
+import {ChartDataService} from '../../services/chart-data.service';
 
 @Component({
   selector: 'app-amcharts3',
   templateUrl: './amcharts3.component.html',
   styleUrls: ['./amcharts3.component.css']
 })
-export class Amcharts3Component implements OnChanges {
-  @Input() data: any;
+export class Amcharts3Component implements AfterViewInit {
   public chartData: any;
+  public dataPointsCount = 100;
   private chart: AmChart;
   public renderTimeResult = '';
   public result: number;
   public startRenderTime = new Date();
 
-  constructor(private AmCharts: AmChartsService, private cdRef: ChangeDetectorRef) {
+  constructor(private AmCharts: AmChartsService, private cdRef: ChangeDetectorRef, private chartDataService: ChartDataService) {
+    this.getNewData();
   }
 
-  ngOnChanges(changes): void {
-    if (changes.data && changes.data && changes.data.currentValue) {
-      this.chartData = changes.data.currentValue;
+  ngAfterViewInit(): void {
+    console.log('this.chartData: ', this.chartData);
+    if (this.chartData) {
       this.renderChart();
     }
+  }
+
+  public getNewData() {
+    this.chartData = this.chartDataService.generateNewData(this.dataPointsCount);
   }
 
   private countRenderTime() {
@@ -39,7 +45,7 @@ export class Amcharts3Component implements OnChanges {
         'marginRight': 80,
         'autoMarginOffset': 20,
         'marginTop': 7,
-        'dataProvider': this.data,
+        'dataProvider': this.chartData,
         'valueAxes': [{
           'axisAlpha': 0.2,
           'dashLength': 1,
