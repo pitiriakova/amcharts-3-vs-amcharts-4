@@ -1,0 +1,15 @@
+<div style="display:flex; flex-direction: row">
+  <div style="flex: 1">
+    <app-amcharts3 [data]="data"></app-amcharts3>
+  </div>
+  <div style="flex: 1">
+    <app-amcharts4 [data]="data"></app-amcharts4>
+  </div>
+</div>
+<div style="margin-top: 50px;">
+  number of points per serie:
+  <input type="number" [(ngModel)]="dataPointsCount"/>
+  <button (click)="generateNewData()">New Chart</button>
+
+  <div><b>Number of dots in chart: {{dataPointsCount * 3}}</b></div>
+</div>
