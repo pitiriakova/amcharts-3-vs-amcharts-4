@@ -1,0 +1,10 @@
+<div class="chart-inpuit-parameters">
+  <div style="margin: 50px;">
+    number of points per serie:
+    <input type="number" [(ngModel)]="dataPointsCount"/>
+    <button (click)="updateData()">New Chart</button>
+    series count: <input type="number" [(ngModel)]="seriesCount" max="5"/>
+
+    <div><b>Number of dots in chart: {{dataPointsCount * seriesCount}}</b></div>
+  </div>
+</div>

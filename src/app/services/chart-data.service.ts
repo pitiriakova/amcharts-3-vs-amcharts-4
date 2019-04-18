@@ -1,51 +1,67 @@
 import { Injectable } from '@angular/core';
+import {ChartSettings} from './default-chart-settings';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChartDataService {
   public data = [];
+  min = 0;
+  max = 10;
 
   constructor() {
-    this.generateNewData(100);
+    this.generateNewData(ChartSettings.DEFAULT_DATA_POINTS_COUNT, ChartSettings.DEFAULT_SERIES_COUNT);
   }
   public addDays(currentDate, index) {
     const date = new Date(currentDate.valueOf());
-    date.setDate(date.getDate() + index);
+    date.setDate(currentDate.getDate() + (Math.random() * (this.max - this.min + 1) + this.min) + index);
+
     return date;
   }
 
-  generateNewData(dataPointsCount) {
-    console.log('generateNewData')
+  generateNewData(dataPointsCount, seriesCount) {
     this.data = [];
     const currentDate = new Date();
     Array.apply(null, {length: dataPointsCount})
-      .map(Function.call, Math.random).forEach((item, index) => {
-      this.data.push({
-        date: this.addDays(currentDate, index),
-        series1: item,
-        series2: item + 1,
-        series3: item - 1,
-      });
+      .forEach((item, index) => {
+        for (let i = 1; i <= seriesCount; i++ ) {
+          this.data.push({
+            date: this.addDays(currentDate, index),
+            [`series${i}`] : (Math.random() * (this.max - this.min + 1) + this.min)
+          });
+        }
     });
-    console.log('this.data', this.data);
-    return this.data;
+    return this.data.sort((a, b) => a.date - b.date);
   }
 
-  generateNewHighchartsData(dataPointsCount) {
-    const categoryData = [];
-    const series1 = [];
-    const series2 = [];
-    const series3 = [];
+  generateNewHighchartsData(dataPointsCount: number, seriesCount: number) {
+    const data = {};
     const currentDate = new Date();
-    Array.apply(null, {length: dataPointsCount})
-      .map(Function.call, Math.random).forEach((item, index) => {
-      categoryData.push(this.addDays(currentDate, index));
-      series1.push(item);
-      series2.push(item + 1);
-      series3.push(item - 1);
-    });
 
-    return {categoryData, series1, series2, series3};
+    for (let i = 1; i <= seriesCount; i++ ) {
+      data[`series${i}`] = [];
+    }
+
+    Array.apply(null, {length: dataPointsCount})
+      .forEach((item, index) => {
+        for (let i = 1; i <= seriesCount; i++ ) {
+          data[`series${i}`].push(
+            this.addDays(currentDate, index),
+            (Math.random() * (this.max - this.min + 1) + this.min)
+          );
+        }
+      });
+
+    return this.sortData(data);
+  }
+
+  private sortData(data) {
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
+        data[key].sort((a, b) => a.date - b.date);
+      }
+    }
+
+    return data;
   }
 }

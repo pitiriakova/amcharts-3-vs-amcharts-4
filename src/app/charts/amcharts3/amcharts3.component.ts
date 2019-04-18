@@ -1,6 +1,7 @@
 import {AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, OnInit, Output} from '@angular/core';
 import { AmChartsService, AmChart } from '@amcharts/amcharts3-angular';
 import {ChartDataService} from '../../services/chart-data.service';
+import {ChartSettings} from '../../services/default-chart-settings';
 
 @Component({
   selector: 'app-amcharts3',
@@ -9,25 +10,24 @@ import {ChartDataService} from '../../services/chart-data.service';
 })
 export class Amcharts3Component implements AfterViewInit {
   public chartData: any;
-  public dataPointsCount = 100;
   private chart: AmChart;
   public renderTimeResult = '';
   public result: number;
   public startRenderTime = new Date();
 
   constructor(private AmCharts: AmChartsService, private cdRef: ChangeDetectorRef, private chartDataService: ChartDataService) {
-    this.getNewData();
+    this.chartData = this.chartDataService.generateNewData(ChartSettings.DEFAULT_DATA_POINTS_COUNT, ChartSettings.DEFAULT_SERIES_COUNT);
   }
 
-  ngAfterViewInit(): void {
-    console.log('this.chartData: ', this.chartData);
+  public ngAfterViewInit(): void {
     if (this.chartData) {
       this.renderChart();
     }
   }
 
-  public getNewData() {
-    this.chartData = this.chartDataService.generateNewData(this.dataPointsCount);
+  public updateData(data): void {
+    this.chartData = this.chartDataService.generateNewData(data.dataPointsCount, data.seriesCount);
+    this.renderChart();
   }
 
   private countRenderTime() {
@@ -37,7 +37,7 @@ export class Amcharts3Component implements AfterViewInit {
     this.cdRef.detectChanges();
   }
 
-  private renderChart() {
+  private renderChart(): void {
     this.startRenderTime = new Date();
       this.chart = this.AmCharts.makeChart('chartdiv-3', {
         'type': 'serial',

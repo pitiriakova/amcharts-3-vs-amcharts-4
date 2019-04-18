@@ -1,22 +1,22 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy} from '@angular/core';
 import * as Highcharts from 'highcharts';
 import {ChartDataService} from '../../services/chart-data.service';
+import {ChartSettings} from '../../services/default-chart-settings';
 
 @Component({
   selector: 'app-highcharts',
   templateUrl: './highcharts.component.html',
   styleUrls: ['./highcharts.component.css']
 })
-export class HighchartsComponent implements AfterViewInit {
+export class HighchartsComponent implements AfterViewInit, OnDestroy {
   public chart: any;
   public chartData: any;
   public startRenderTime: Date;
-  public dataPointsCount = 100;
   public renderTimeResult = '';
   public result = 0;
 
   constructor(private chartDataService: ChartDataService) {
-    this.chartData = this.chartDataService.generateNewHighchartsData();
+    this.chartData = this.chartDataService.generateNewHighchartsData(ChartSettings.DEFAULT_DATA_POINTS_COUNT, ChartSettings.DEFAULT_SERIES_COUNT);
   }
 
   private countRenderTime() {
@@ -25,99 +25,85 @@ export class HighchartsComponent implements AfterViewInit {
     this.renderTimeResult = `${new Date(this.result).getSeconds()} seconds, ${new Date(this.result).getMilliseconds()} milliseconds`;
   }
 
-  ngAfterViewInit() {
-    this.renderChart();
+  public ngAfterViewInit(): void {
+    this.renderChart(ChartSettings.DEFAULT_SERIES_COUNT);
   }
 
-  getNewData() {
-    this.chartData = this.chartDataService.generateNewHighchartsData(this.dataPointsCount);
-    this.renderChart();
+  public ngOnDestroy(): void {
+    if (this.chart) {
+      this.chart.destroy();
+    }
   }
 
-  renderChart() {
+  public updateData(data): void {
+    this.chartData = this.chartDataService.generateNewHighchartsData(data.dataPointsCount, data.seriesCount);
+    this.renderChart(data.seriesCount);
+  }
+
+  private renderChart(seriesCount: number): void {
     const cmp = this;
     this.startRenderTime = new Date();
     this.chart = Highcharts.chart('container', {
 
       chart: {
+        type: 'line',
         scrollablePlotArea: {
-          minWidth: 700
+          minWidth: 1500
+      },
+        animation: {
+          duration: 0
         },
         events: {
           load: function(event) {
-            console.log('AAAAAAAAAAAAAAAAAA');
             cmp.countRenderTime();
-          },
-          redraw: function(event) {
-            console.log('AAAAAAAAAAAAAAAAAA');
           }
         },
       },
-      data: this.chartData,
-
+      title: {
+        text: ''
+      },
       xAxis: {
-        categories: this.chartData.date,
         gridLineWidth: 1,
+        type: 'datetime',
         labels: {
-          align: 'left',
-          x: 3,
-          y: -3
+          formatter: function() {
+            return Highcharts.dateFormat('%a %d %b', this.value);
+          }
         }
       },
-      yAxis: [{ // left y axis
-        labels: {
-          align: 'left',
-          x: 3,
-          y: 16
-        },
+      yAxis: [{
         showFirstLabel: true
       }],
-
-      legend: {
-        align: 'left',
-        verticalAlign: 'top',
-        borderWidth: 0
-      },
-
       tooltip: {
         shared: true,
         crosshairs: true
       },
-
       plotOptions: {
         series: {
           cursor: 'pointer',
         },
         line: {
           marker: {
-            enabled: true
+            enabled: true,
+            radius: 6,
+            symbol: 'round'
           },
-          enableMouseTracking: false
+          enableMouseTracking: true
         }
       },
-      series: [{
-        type: 'line',
-        // data: this.chartData.series1,
-        name: 'series1',
-        lineWidth: 0,
-        animation: {
-          duration: 0
-        },
-      }, {
-        type: 'line',
-        // data: this.chartData.series2,
-        name: 'series1',
-        lineWidth: 0,
-        animation: {
-          duration: 0
-        },
-      }]
     });
 
-    console.log('DDDDDDDD11111111111111: ', this.chartData.series1);
-    console.log('DDDDDDDD11111111111111222222222222222: ', this.chartData.series2);
-    this.chart.series[0].setData(this.chartData.series1);
-    this.chart.series[1].setData(this.chartData.series2);
+    for (let i = 1; i <= seriesCount; i++) {
+      this.chart.addSeries({
+        name: `series${i}`,
+        data: this.chartData[`series${i}`],
+        animation: {
+          duration: 0
+        },
+        turboThreshold: 0, // to be able set more than 1000 points per series
+        pointInterval: 24 * 3600 * 1000 * 7// one week
+      });
+    }
   }
 }
 

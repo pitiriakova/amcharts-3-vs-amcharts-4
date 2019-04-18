@@ -1,11 +1,6 @@
 <div class="highcharts">
+  <h1>Highcharts</h1>
   <div id="container"></div>
-  <div style="margin-top: 50px;">
-    number of points per serie:
-    <input type="number" [(ngModel)]="dataPointsCount"/>
-    <button (click)="getNewData()">New Chart</button>
-
-    <div><b>Number of dots in chart: {{dataPointsCount * 3}}</b></div>
-  </div>
+  <app-chart-input-parameters (dataUpdated)="updateData($event)"></app-chart-input-parameters>
   <b style="font-size:18px; color: green;">Render time: {{renderTimeResult}}</b>
 </div>
