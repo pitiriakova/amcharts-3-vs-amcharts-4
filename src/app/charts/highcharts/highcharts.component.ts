@@ -74,10 +74,10 @@ export class HighchartsComponent implements AfterViewInit, OnDestroy {
       yAxis: [{
         showFirstLabel: true
       }],
-      tooltip: {
-        shared: true,
-        crosshairs: true
-      },
+      // tooltip: {
+      //   shared: true,
+      //   crosshairs: true
+      // },
       plotOptions: {
         series: {
           cursor: 'pointer',

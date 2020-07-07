@@ -13,11 +13,15 @@ import { HeaderComponent } from './shared/header/header.component';
 import {ChartDataService} from './services/chart-data.service';
 import { HighchartsComponent } from './charts/highcharts/highcharts.component';
 import { ChartInputParametersComponent } from './charts/chart-input-parameters/chart-input-parameters.component';
+import { CanvasjsComponent } from './charts/canvasjs/canvasjs.component';
+import { Amcharts4CandlesticksComponent } from './charts/amcharts4-candlesticks/amcharts4-candlesticks.component';
+import { Amcharts4StackedAreaComponent } from './charts/amcharts4-stacked-area/amcharts4-stacked-area.component';
+import {CandlestickDataGenerator} from './services/candlesticks-data-generation';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Amcharts3Component, Amcharts4Component, HeaderComponent, HighchartsComponent, ChartInputParametersComponent
+    Amcharts3Component, Amcharts4Component, HeaderComponent, HighchartsComponent, ChartInputParametersComponent, CanvasjsComponent, Amcharts4CandlesticksComponent, Amcharts4StackedAreaComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +32,7 @@ import { ChartInputParametersComponent } from './charts/chart-input-parameters/c
     FormsModule,
     AmChartsModule,
   ],
-  providers: [ChartDataService],
+  providers: [ChartDataService, CandlestickDataGenerator],
   bootstrap: [AppComponent],
   exports: [ChartInputParametersComponent],
 })
