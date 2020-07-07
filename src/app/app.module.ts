@@ -14,14 +14,26 @@ import {ChartDataService} from './services/chart-data.service';
 import { HighchartsComponent } from './charts/highcharts/highcharts.component';
 import { ChartInputParametersComponent } from './charts/chart-input-parameters/chart-input-parameters.component';
 import { CanvasjsComponent } from './charts/canvasjs/canvasjs.component';
-import { Amcharts4CandlesticksComponent } from './charts/amcharts4-candlesticks/amcharts4-candlesticks.component';
+import { CandlesticksLoginsBaseComponent } from './charts/amcharts-candlestick-page/candlesticks-logins-base/candlesticks-logins-base.component';
 import { Amcharts4StackedAreaComponent } from './charts/amcharts4-stacked-area/amcharts4-stacked-area.component';
-import {CandlestickDataGenerator} from './services/candlesticks-data-generation';
+import {LoginTimesCandlestickDataGenerator} from './services/login-times-candlesticks-data-generation';
+import { AmchartsCandlestickPageComponent } from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
+import { CandlestickLoginsSeparatedAxisComponent } from './charts/amcharts-candlestick-page/candlestick-logins-separated-axis/candlestick-logins-separated-axis.component';
+import {ApplicationsCandlestickDataGenerator} from './services/applications-candlesticks-data-generation';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Amcharts3Component, Amcharts4Component, HeaderComponent, HighchartsComponent, ChartInputParametersComponent, CanvasjsComponent, Amcharts4CandlesticksComponent, Amcharts4StackedAreaComponent
+    Amcharts3Component,
+    Amcharts4Component,
+    HeaderComponent,
+    HighchartsComponent,
+    ChartInputParametersComponent,
+    CanvasjsComponent,
+    CandlesticksLoginsBaseComponent,
+    Amcharts4StackedAreaComponent,
+    AmchartsCandlestickPageComponent,
+    CandlestickLoginsSeparatedAxisComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +44,7 @@ import {CandlestickDataGenerator} from './services/candlesticks-data-generation'
     FormsModule,
     AmChartsModule,
   ],
-  providers: [ChartDataService, CandlestickDataGenerator],
+  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, ApplicationsCandlestickDataGenerator],
   bootstrap: [AppComponent],
   exports: [ChartInputParametersComponent],
 })

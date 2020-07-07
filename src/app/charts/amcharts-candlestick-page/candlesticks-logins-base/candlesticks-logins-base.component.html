@@ -1,0 +1,53 @@
+<div class="chart-container">
+  <div class="toggle-bar">
+    <div class="login-times">
+      <div>
+        <input id="login-times" type="radio" (change)="changeDataSource('logins')"/>
+        <label for="login-times">Login Times </label>
+      </div>
+      <div>
+        <input id="connection2" type="checkbox" (change)="toggleSeries('connection')"/>
+        <label for="connection2">Connection</label>
+      </div>
+      <div>
+        <input id="userProfile2" type="checkbox" (change)="toggleSeries('userProfile')"/>
+        <label for="userProfile2">User Profile</label>
+      </div>
+      <div>
+        <input id="groupPolicies2" type="checkbox"  (change)="toggleSeries('groupPolicies')"/>
+        <label for="groupPolicies2">GPO</label>
+      </div>
+      <div>
+        <input id="totalLoginTimes2" type="checkbox" (change)="toggleSeries('totalLoginTimes')"/>
+        <label for="totalLoginTimes2">Total Login Times</label>
+      </div>
+    </div>
+
+    <div class="applications">
+      <div class="toggle-bar">
+        <div>
+          <input id="applications" type="radio" (change)="changeDataSource('applications')"/>
+          <label for="applications">Applications</label>
+        </div>
+        <div>
+          <input id="application1" type="checkbox" (change)="toggleSeries('application1')"/>
+          <label for="application1">Application 2</label>
+        </div>
+        <div>
+          <input id="application2" type="checkbox"  (change)="toggleSeries('application2')"/>
+          <label for="application2">Application 3</label>
+        </div>
+        <div>
+          <input id="application3" type="checkbox" (change)="toggleSeries('application3')"/>
+          <label for="application3">Application 4</label>
+        </div>
+        <div>
+          <input id="application4" type="checkbox" (change)="toggleSeries('application4')"/>
+          <label for="application4">Application 1</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chartdiv-simple-candlesticks" style="width: 1000px; height: 500px"></div>
+</div>

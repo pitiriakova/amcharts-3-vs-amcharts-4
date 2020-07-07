@@ -1,0 +1,21 @@
+<div class="chart-container">
+  <div class="toggle-bar">
+    <div>
+      <input id="connection1" type="checkbox" (change)="toggleSeries('connection')"/>
+      <label for="connection1">Connection</label>
+    </div>
+    <div>
+      <input id="userProfile1" type="checkbox" (change)="toggleSeries('userProfile')"/>
+      <label for="userProfile1">User Profile</label>
+    </div>
+    <div>
+      <input id="groupPolicies1" type="checkbox" (change)="toggleSeries('groupPolicies')"/>
+      <label for="groupPolicies1">GPO</label>
+    </div>
+    <div>
+      <input id="totalLoginTimes1" type="checkbox" (change)="toggleSeries('totalLoginTimes')"/>
+      <label for="totalLoginTimes1">Total Login Times</label>
+    </div>
+  </div>
+  <div class="chartdiv-candlestick-scrollbar" style="width: 1000px; height: 500px"></div>
+</div>
