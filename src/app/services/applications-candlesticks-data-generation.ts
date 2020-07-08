@@ -114,10 +114,10 @@ export class ApplicationsCandlestickDataGenerator {
 
   getTimestamp(): string {
     const today = new Date();
-    if (this.counter % 12 === 0) {
+    if (this.counter % 6 === 0) {
       this.minutesToSet = 0;
     } else {
-      this.minutesToSet = this.minutesToSet + 5;
+      this.minutesToSet = this.minutesToSet + 10;
     }
 
     const seconds = today.getSeconds() < 10 ? '0' + today.getSeconds() : today.getSeconds();

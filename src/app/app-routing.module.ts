@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import {Amcharts4Component} from './charts/amcharts4/amcharts4.component';
 import {HighchartsComponent} from './charts/highcharts/highcharts.component';
 import {CanvasjsComponent} from './charts/canvasjs/canvasjs.component';
-import {CandlesticksLoginsBaseComponent} from './charts/amcharts-candlestick-page/candlesticks-logins-base/candlesticks-logins-base.component';
+import {CandlesticksBaseComponent} from './charts/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
 import {Amcharts4StackedAreaComponent} from './charts/amcharts4-stacked-area/amcharts4-stacked-area.component';
 import {AmchartsCandlestickPageComponent} from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
 

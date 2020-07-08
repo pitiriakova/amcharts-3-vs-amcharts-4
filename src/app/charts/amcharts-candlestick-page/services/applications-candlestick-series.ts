@@ -1,7 +1,7 @@
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 
-export function createApplicationsMeasurementsChart(chart, data: any) {
+export function createApplicationsMeasurementsChart(chart, data: any, series) {
   chart.paddingRight = 20;
   chart.dateFormatter.inputDateFormat = 'HH:mm:ss';
   chart.data = data;
@@ -20,7 +20,7 @@ export function createApplicationsMeasurementsChart(chart, data: any) {
 
 function getDateAxis(chart: any) {
   const dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-  dateAxis.skipEmptyPeriods = false;
+  dateAxis.skipEmptyPeriods = true;
   dateAxis.renderer.ticks.template.disabled = false;
   dateAxis.renderer.line.strokeOpacity = 1;
   dateAxis.renderer.line.strokeWidth = 1;
@@ -29,7 +29,7 @@ function getDateAxis(chart: any) {
   dateAxis.renderer.ticks.template.length = 1;
   dateAxis.baseInterval = {
     timeUnit: 'minute',
-    count: 5
+    count: 10
   };
   dateAxis.startLocation = 0;
   dateAxis.endLocation = 1;
@@ -47,22 +47,22 @@ function getValueAxis(chart: any) {
   valueAxis.min = 0;
 }
 
-export function createSeries(name, color, chart) {
+export function createSeries(id, color, chart) {
   const series = chart.series.push(new am4charts.CandlestickSeries());
-  series.name = name;
+  series.name = id;
   series.dataFields.dateX = 'timestamp';
-  series.dataFields.valueY = `${name}_value`;
-  series.dataFields.openValueY = `${name}_min`;
-  series.dataFields.lowValueY = `${name}_min`;
-  series.dataFields.highValueY = `${name}_max`;
+  series.dataFields.valueY = `${id}_value`;
+  series.dataFields.openValueY = `${id}_min`;
+  series.dataFields.lowValueY = `${id}_min`;
+  series.dataFields.highValueY = `${id}_max`;
   series.simplifiedProcessing = true;
-
   series.riseFromOpenState.properties.fill = am4core.color(color);
   series.riseFromOpenState.properties.fillOpacity = 0.5;
   series.dropFromOpenState.properties.fill = am4core.color(color);
   series.riseFromOpenState.properties.stroke = am4core.color(color);
   series.dropFromOpenState.properties.stroke = am4core.color(color);
-  // series.hide();
+  series.hide();
+  series.hiddenInLegend = series.isHidden;
   // userProfileSeries.tooltipText = 'Open:${openValueY.value}\nLow:${lowValueY.value}\nHigh:${highValueY.value}\nClose:${valueY.value}';
   return series;
 }

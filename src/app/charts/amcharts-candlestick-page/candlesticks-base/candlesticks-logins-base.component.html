@@ -1,0 +1,61 @@
+<div class="chart-container">
+  <div class="login-times">
+    <div class="toggle-bar">
+      <div>
+        <input id="login-times" [checked]="dataSource==='logins'" type="radio" (change)="changeDataSource('logins')"/>
+        <label for="login-times"><b>Login Times</b> </label>
+      </div>
+      <div class="all-logins" *ngIf="dataSource==='logins'">
+        <div>
+          <input id="connection2" type="checkbox" (change)="toggleSeries('connection')"/>
+          <label for="connection2">Connection</label>
+        </div>
+        <div>
+          <input id="userProfile2" type="checkbox" (change)="toggleSeries('userProfile')"/>
+          <label for="userProfile2">User Profile</label>
+        </div>
+        <div>
+          <input id="groupPolicies2" type="checkbox"  (change)="toggleSeries('groupPolicies')"/>
+          <label for="groupPolicies2">GPO</label>
+        </div>
+        <div>
+          <input id="totalLoginTimes2" type="checkbox" (change)="toggleSeries('totalLoginTimes')"/>
+          <label for="totalLoginTimes2">Total Login Times</label>
+        </div>
+      </div>
+    </div>
+    <div class="applications" style="margin-top: 40px">
+      <div class="toggle-bar">
+        <div>
+          <input id="applications" type="radio"  [checked]="dataSource==='applications'"
+                 (change)="changeDataSource('applications')"/>
+          <label for="applications"><b>Applications</b></label>
+        </div>
+        <div class="all-apps" *ngIf="dataSource==='applications'">
+          <span>Application 1</span>
+          <div class="measurements" *ngFor="let s of applicationsSeriesNames[0]">
+            <input id="app1_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+            <label for="app1_{{s.id}}">{{s.name}}</label>
+          </div>
+          <span>Application 2</span>
+          <div class="measurements" *ngFor="let s of applicationsSeriesNames[1]">
+            <input id="app2_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+            <label for="app2_{{s.id}}">{{s.name}}</label>
+          </div>
+          <span>Application 3</span>
+          <div class="measurements" *ngFor="let s of applicationsSeriesNames[2]">
+            <input id="app3_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+            <label for="app3_{{s.id}}">{{s.name}}</label>
+          </div>
+          <span>Application 4</span>
+          <div class="measurements" *ngFor="let s of applicationsSeriesNames[3]">
+            <input id="app4_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+            <label for="app4_{{s.id}}">{{s.name}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="chartdiv-simple-candlesticks" style="width: 1000px; height: 500px"></div>
+</div>

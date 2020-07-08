@@ -14,7 +14,7 @@ import {ChartDataService} from './services/chart-data.service';
 import { HighchartsComponent } from './charts/highcharts/highcharts.component';
 import { ChartInputParametersComponent } from './charts/chart-input-parameters/chart-input-parameters.component';
 import { CanvasjsComponent } from './charts/canvasjs/canvasjs.component';
-import { CandlesticksLoginsBaseComponent } from './charts/amcharts-candlestick-page/candlesticks-logins-base/candlesticks-logins-base.component';
+import { CandlesticksBaseComponent } from './charts/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
 import { Amcharts4StackedAreaComponent } from './charts/amcharts4-stacked-area/amcharts4-stacked-area.component';
 import {LoginTimesCandlestickDataGenerator} from './services/login-times-candlesticks-data-generation';
 import { AmchartsCandlestickPageComponent } from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
@@ -30,7 +30,7 @@ import {ApplicationsCandlestickDataGenerator} from './services/applications-cand
     HighchartsComponent,
     ChartInputParametersComponent,
     CanvasjsComponent,
-    CandlesticksLoginsBaseComponent,
+    CandlesticksBaseComponent,
     Amcharts4StackedAreaComponent,
     AmchartsCandlestickPageComponent,
     CandlestickLoginsSeparatedAxisComponent
