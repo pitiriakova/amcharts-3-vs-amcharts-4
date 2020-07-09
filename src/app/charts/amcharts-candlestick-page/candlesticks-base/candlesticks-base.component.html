@@ -1,0 +1,18 @@
+<div class="chart-container">
+  <app-toolbar [selectedPercentile]="selectedPercentile"
+               [applicationsSeriesNames]="applicationsSeriesNames"
+               (appSeriesToggled)="toggleSeries($event)"
+               (dataSourceChanged)="changeDataSource($event)">
+  </app-toolbar>
+
+  <div class="charts">
+    <div class="chart">
+      <h2>10/90</h2>
+      <div class="chartdiv-simple-candlesticks-10-90" style="width: 1000px; height: 500px"></div>
+    </div>
+    <div class="chart">
+      <h2>25/75</h2>
+      <div class="chartdiv-simple-candlesticks-25-75" style="width: 1000px; height: 500px"></div>
+    </div>
+  </div>
+</div>

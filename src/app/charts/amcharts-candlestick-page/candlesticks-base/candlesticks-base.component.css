@@ -7,10 +7,11 @@
   display: flex;
 }
 
-.toggle-bar {
+.charts {
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  justify-content: center;
 }
 
+.chart {
+  display: flex;
+  flex-direction: column;
+}

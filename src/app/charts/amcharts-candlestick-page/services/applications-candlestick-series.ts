@@ -1,20 +1,15 @@
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 
-export function createApplicationsMeasurementsChart(chart, data: any, series) {
+export function createApplicationsMeasurementsChart(chart, data: any) {
   chart.paddingRight = 20;
   chart.dateFormatter.inputDateFormat = 'HH:mm:ss';
   chart.data = data;
-  // chart.legend = new am4charts.Legend();
-
-  // chart.legend.position = 'top';
   chart.fontSize = 12;
   chart.fontFamily = 'Roboto, sans-serif';
   getDateAxis(chart);
   getValueAxis(chart);
-
   chart.cursor = new am4charts.XYCursor();
-
   return chart;
 }
 
@@ -51,18 +46,19 @@ export function createSeries(id, color, chart) {
   const series = chart.series.push(new am4charts.CandlestickSeries());
   series.name = id;
   series.dataFields.dateX = 'timestamp';
-  series.dataFields.valueY = `${id}_value`;
-  series.dataFields.openValueY = `${id}_min`;
+  series.dataFields.average = `${id}_value`;
+  series.dataFields.valueY = `${id}_l1`;
+  series.dataFields.openValueY = `${id}_l2`;
   series.dataFields.lowValueY = `${id}_min`;
   series.dataFields.highValueY = `${id}_max`;
   series.simplifiedProcessing = true;
   series.riseFromOpenState.properties.fill = am4core.color(color);
-  series.riseFromOpenState.properties.fillOpacity = 0.5;
+  series.riseFromOpenState.properties.fillOpacity = 1;
   series.dropFromOpenState.properties.fill = am4core.color(color);
   series.riseFromOpenState.properties.stroke = am4core.color(color);
   series.dropFromOpenState.properties.stroke = am4core.color(color);
   series.hide();
   series.hiddenInLegend = series.isHidden;
-  // userProfileSeries.tooltipText = 'Open:${openValueY.value}\nLow:${lowValueY.value}\nHigh:${highValueY.value}\nClose:${valueY.value}';
+  series.tooltipText = '90%:{openValueY.value}\nMin:{lowValueY.value}\nMax:{highValueY.value}\n10%:{valueY.value}\naverage:{average.value}';
   return series;
 }

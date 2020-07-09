@@ -1,13 +1,11 @@
-import {Injectable} from '@angular/core';
-
-@Injectable({
-  providedIn: 'root'
-})
 export class ApplicationsCandlestickDataGenerator {
   timestamp: any = null;
   dataArray: any[] = [];
   minutesToSet = 0;
   counter = 0;
+  q1: number;
+  q2: number;
+
   id = '076b0d0d-d201-4213-bc72-822c9b54d602__app_start_time';
   currentIdIndex = 0;
   ids = [
@@ -40,31 +38,58 @@ export class ApplicationsCandlestickDataGenerator {
     '2bd3b2b9-75b7-422e-8a15-dea3036b4d8d__measurement4',
   ];
 
+  public timeSlotData: number[] = [];
+
   constructor() {
 
   }
 
-  public init() {
-    this.counter = 0;
-  }
+  // generate 100 values
+  generateDataPerTimeSlot() {
+    for (let i = 0; i <= 100; i++) {
+      const randomMin = Number((Math.random() * 0.3 + 0.9));
+      const randomMax = Number((Math.random() * 1.5 + 2.6));
 
-  generateApplicationsData() {
-    this.counter = this.counter + 1;
-
-    if (this.counter % 12 === 0) {
-      this.id = this.getNextId();
+      this.timeSlotData.push(Number((Math.random() * randomMax + randomMin).toFixed(4)));
     }
 
-    const value = this.getValue();
-    const min =  this.getMin(value);
-    const max =  this.getMax(value);
+    return this.timeSlotData.sort();
+  }
+
+  private getPercentile(num: number) {
+    const index = this.timeSlotData.length * (num / 100);
+
+    if (index % 2 === 0) {
+      return this.timeSlotData[index];
+    } else {
+      return (this.timeSlotData[Math.round(index)] + this.timeSlotData[Math.floor(index)]) / 2;
+    }
+  }
+
+  generateApplicationsData(q1?: number, q2?: number) {
+    if (this.counter === 0) {
+      this.q1 = q1;
+      this.q2 = q2;
+      this.id = this.ids[0];
+    }
+
+    this.timeSlotData = [];
+    this.generateDataPerTimeSlot();
+
+    this.counter = this.counter + 1;
+
+    if (this.counter % 6 === 0) {
+      this.id = this.getNextId();
+    }
 
     const obj = {
       id: this.id,
       timestamp: this.getTimestamp(),
-      [this.id + '_max']: max.toFixed(4),
-      [this.id + '_min']: min.toFixed(4),
-      [this.id + '_value']: value.toFixed(4),
+      [this.id + '_max']: this.timeSlotData.reduce((a, b) => Math.max(a, b)),
+      [this.id + '_min']: this.timeSlotData.reduce((a, b) => Math.min(a, b)),
+      [this.id + '_l1']: this.getPercentile(this.q1),
+      [this.id + '_l2']: this.getPercentile(this.q2),
+      [this.id + '_value']: (this.timeSlotData[0] + this.timeSlotData[this.timeSlotData.length - 1]) / 2,
       label: 'Duration',
       'description': [
         {
@@ -104,12 +129,20 @@ export class ApplicationsCandlestickDataGenerator {
 
 
     this.dataArray.push(obj);
-    if (this.counter === 192) {
-      this.counter = 0;
-      return this.dataArray;
+    if (this.counter === 119) {
+      const arrayToReturn = [...this.dataArray];
+      this.resetService();
+      return arrayToReturn;
     } else {
       return this.generateApplicationsData();
     }
+  }
+
+  resetService () {
+    this.counter = 0;
+    this.id = this.ids[0];
+    this.dataArray = [];
+    this.timeSlotData = [];
   }
 
   getTimestamp(): string {
@@ -126,22 +159,9 @@ export class ApplicationsCandlestickDataGenerator {
   }
 
   getNextId () {
-    if (this.counter % 12 === 0) {
+    if (this.counter % 6 === 0) {
       this.currentIdIndex = this.currentIdIndex + 1;
       return this.id = this.ids[this.currentIdIndex];
     }
-  }
-
-  getMax(value: number): number {
-    return Number((Math.random() * value).toFixed(4));
-  }
-
-  getMin(value: number): number {
-    return  Number((Math.random() * value).toFixed(4));
-  }
-
-  getValue(): number {
-    // from 0.8 till 2.1
-    return Number((Math.random() * 2.1 + 0.8).toFixed(4));
   }
 }

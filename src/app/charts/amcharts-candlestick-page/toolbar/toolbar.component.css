@@ -1,0 +1,10 @@
+.toggle-bar {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  width: 120px;
+}
+.measurements {
+  display: flex;
+}

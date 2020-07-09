@@ -4,7 +4,7 @@ import {Amcharts4Component} from './charts/amcharts4/amcharts4.component';
 import {HighchartsComponent} from './charts/highcharts/highcharts.component';
 import {CanvasjsComponent} from './charts/canvasjs/canvasjs.component';
 import {CandlesticksBaseComponent} from './charts/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
-import {Amcharts4StackedAreaComponent} from './charts/amcharts4-stacked-area/amcharts4-stacked-area.component';
+import {Amcharts4StackedAreaPageComponent} from './charts/amcharts4-stacked-area-page/amcharts4-stacked-area-page.component';
 import {AmchartsCandlestickPageComponent} from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
 
 const appRoutes: Routes = [
@@ -13,7 +13,7 @@ const appRoutes: Routes = [
   { path: 'highcharts', component: HighchartsComponent },
   { path: 'canvasJS', component: CanvasjsComponent },
   { path: 'amcharts4-candlestick-page', component: AmchartsCandlestickPageComponent },
-  { path: 'amcharts4-stacked-area', component: Amcharts4StackedAreaComponent },
+  { path: 'amcharts4-stacked-area-page', component: Amcharts4StackedAreaPageComponent },
   { path: '',
     redirectTo: '/amcharts4',
     pathMatch: 'full'
