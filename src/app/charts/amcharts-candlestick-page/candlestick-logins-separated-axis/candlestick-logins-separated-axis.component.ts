@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, Input, NgZone, OnInit} from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
-import {LoginTimesCandlestickDataGenerator} from '../../../services/login-times-candlesticks-data-generation';
+import {LoginTimesCandlestickDataGenerator} from '../services/login-times-candlesticks-data-generation';
 import {LoginTimesChart} from '../services/login-times-candlestick-series';
 import {colors} from '../../../shared/shared-chart-settings';
 

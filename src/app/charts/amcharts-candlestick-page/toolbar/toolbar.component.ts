@@ -10,7 +10,6 @@ export class ToolbarComponent implements OnInit, OnChanges {
   @Output() percentileSwitched: EventEmitter<any> = new EventEmitter<{p1, p2}>();
   @Output() dataSourceChanged: EventEmitter<string> = new EventEmitter<string>();
   @Output() appSeriesToggled: EventEmitter<any> = new EventEmitter<any>();
-  @Input() selectedPercentile;
   @Input() applicationsSeriesNames;
 
   constructor() { }

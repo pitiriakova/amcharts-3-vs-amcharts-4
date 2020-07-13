@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {LoginTimesCandlestickDataGenerator} from '../../services/login-times-candlesticks-data-generation';
+import {LoginTimesCandlestickDataGenerator} from './services/login-times-candlesticks-data-generation';
 
 @Component({
   selector: 'app-amcharts-candlestick-page',

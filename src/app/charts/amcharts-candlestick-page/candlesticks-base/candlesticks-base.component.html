@@ -1,8 +1,6 @@
 <div class="chart-container">
-  <app-toolbar [selectedPercentile]="selectedPercentile"
-               [applicationsSeriesNames]="applicationsSeriesNames"
-               (appSeriesToggled)="toggleSeries($event)"
-               (dataSourceChanged)="changeDataSource($event)">
+  <app-toolbar [applicationsSeriesNames]="applicationsSeriesNames"
+               (appSeriesToggled)="toggleSeries($event)">
   </app-toolbar>
 
   <div class="charts">

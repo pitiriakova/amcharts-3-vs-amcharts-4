@@ -16,10 +16,12 @@ import { ChartInputParametersComponent } from './charts/chart-input-parameters/c
 import { CanvasjsComponent } from './charts/canvasjs/canvasjs.component';
 import { CandlesticksBaseComponent } from './charts/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
 import { Amcharts4StackedAreaPageComponent } from './charts/amcharts4-stacked-area-page/amcharts4-stacked-area-page.component';
-import {LoginTimesCandlestickDataGenerator} from './services/login-times-candlesticks-data-generation';
+import {LoginTimesCandlestickDataGenerator} from './charts/amcharts-candlestick-page/services/login-times-candlesticks-data-generation';
 import { AmchartsCandlestickPageComponent } from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
 import { CandlestickLoginsSeparatedAxisComponent } from './charts/amcharts-candlestick-page/candlestick-logins-separated-axis/candlestick-logins-separated-axis.component';
 import { ToolbarComponent } from './charts/amcharts-candlestick-page/toolbar/toolbar.component';
+import { RangeChartComponent } from './charts/range-chart/range-chart.component';
+import {RangeChartDataGenerator} from './charts/range-chart/range-chart-data-generator';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import { ToolbarComponent } from './charts/amcharts-candlestick-page/toolbar/too
     Amcharts4StackedAreaPageComponent,
     AmchartsCandlestickPageComponent,
     CandlestickLoginsSeparatedAxisComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    RangeChartComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { ToolbarComponent } from './charts/amcharts-candlestick-page/toolbar/too
     FormsModule,
     AmChartsModule,
   ],
-  providers: [ChartDataService, LoginTimesCandlestickDataGenerator],
+  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, RangeChartDataGenerator],
   bootstrap: [AppComponent],
   exports: [ChartInputParametersComponent],
 })

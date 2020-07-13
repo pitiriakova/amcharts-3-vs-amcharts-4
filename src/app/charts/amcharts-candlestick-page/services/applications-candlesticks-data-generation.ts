@@ -40,10 +40,6 @@ export class ApplicationsCandlestickDataGenerator {
 
   public timeSlotData: number[] = [];
 
-  constructor() {
-
-  }
-
   // generate 100 values
   generateDataPerTimeSlot() {
     for (let i = 0; i <= 100; i++) {

@@ -1,0 +1,10 @@
+<div class="chart-container">
+
+  <app-toolbar [applicationsSeriesNames]="applicationsSeriesNames"
+               (appSeriesToggled)="toggleSeries($event)">
+  </app-toolbar>
+
+  <figure class="highcharts-figure">
+    <div id="container"></div>
+  </figure>
+</div>

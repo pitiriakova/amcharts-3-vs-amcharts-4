@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
-import {LoginTimesCandlestickDataGenerator} from '../../services/login-times-candlesticks-data-generation';
+import {LoginTimesCandlestickDataGenerator} from '../amcharts-candlestick-page/services/login-times-candlesticks-data-generation';
 
 @Component({
   selector: 'app-amcharts4-stacked-area',

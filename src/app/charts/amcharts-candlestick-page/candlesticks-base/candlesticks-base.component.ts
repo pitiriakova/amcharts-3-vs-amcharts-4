@@ -3,9 +3,9 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import {AfterViewInit, ChangeDetectorRef, Component, NgZone} from '@angular/core';
 import {ChartDataService} from '../../../services/chart-data.service';
-import {LoginTimesCandlestickDataGenerator} from '../../../services/login-times-candlesticks-data-generation';
+import {LoginTimesCandlestickDataGenerator} from '../services/login-times-candlesticks-data-generation';
 import {createApplicationsMeasurementsChart, createSeries} from '../services/applications-candlestick-series';
-import {ApplicationsCandlestickDataGenerator} from '../../../services/applications-candlesticks-data-generation';
+import {ApplicationsCandlestickDataGenerator} from '../services/applications-candlesticks-data-generation';
 import * as colors from '../../../shared/shared-chart-settings';
 
 @Component({

@@ -17,6 +17,7 @@ export class HighchartsComponent implements AfterViewInit, OnDestroy {
 
   constructor(private chartDataService: ChartDataService) {
     this.chartData = this.chartDataService.generateNewHighchartsData(ChartSettings.DEFAULT_DATA_POINTS_COUNT, ChartSettings.DEFAULT_SERIES_COUNT);
+    console.log('this.chartData: ', this.chartData);
   }
 
   private countRenderTime() {
@@ -93,6 +94,7 @@ export class HighchartsComponent implements AfterViewInit, OnDestroy {
       },
     });
 
+    console.log('this.chartData: ', this.chartData);
     for (let i = 1; i <= seriesCount; i++) {
       this.chart.addSeries({
         name: `series${i}`,
