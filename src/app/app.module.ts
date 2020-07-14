@@ -22,6 +22,7 @@ import { CandlestickLoginsSeparatedAxisComponent } from './charts/amcharts-candl
 import { ToolbarComponent } from './charts/amcharts-candlestick-page/toolbar/toolbar.component';
 import { RangeChartComponent } from './charts/range-chart/range-chart.component';
 import {RangeChartDataGenerator} from './charts/range-chart/range-chart-data-generator';
+import { ZoomChartComponent } from './charts/zoom-chart/zoom-chart.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {RangeChartDataGenerator} from './charts/range-chart/range-chart-data-gen
     AmchartsCandlestickPageComponent,
     CandlestickLoginsSeparatedAxisComponent,
     ToolbarComponent,
-    RangeChartComponent
+    RangeChartComponent,
+    ZoomChartComponent
   ],
   imports: [
     BrowserModule,

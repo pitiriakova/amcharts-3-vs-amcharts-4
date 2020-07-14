@@ -62,10 +62,15 @@ export class RangeChartDataGenerator {
         this.timeSlotData[id][ts] = [];
 
         for (let i = 0; i <= 50; i++) {
-          const randomMin = Number((Math.random() * 0.3 + 0.9));
-          const randomMax = Number((Math.random() * 1.5 + 2.6));
 
-          this.timeSlotData[id][ts].push(Number((Math.random() * randomMax + randomMin).toFixed(4)));
+          // TODO: for login times:
+          // const randomMin = Number((Math.random() * 0.3 + 0.9));
+          // const randomMax = Number((Math.random() * 1.5 + 2.6));
+
+          const randomMin = Number((Math.random() * (0.0001 - 0.03)));
+          const randomMax = Number((Math.random() * (0.08 - 0.04)));
+
+          this.timeSlotData[id][ts].push(Number((Math.random() * randomMax - randomMin).toFixed(4)));
         }
       });
     });
@@ -92,7 +97,7 @@ export class RangeChartDataGenerator {
     this.ids.forEach(id => {
       dataObject[id] = [];
         this.timeslots.forEach(ts => dataObject[id].push([ts,
-          (this.timeSlotData[id][ts].reduce((a, b) => Math.min(a, b)) + this.timeSlotData[id][ts].reduce((a, b) => Math.max(a, b))) / 2]));
+          (Number((this.timeSlotData[id][ts].reduce((a, b) => a + b, 0 ) / 51).toFixed(4)))]));
       }
     );
 
