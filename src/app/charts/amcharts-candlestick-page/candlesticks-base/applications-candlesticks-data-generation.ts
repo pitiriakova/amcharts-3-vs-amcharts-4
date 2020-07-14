@@ -1,3 +1,6 @@
+import candlestickData1090 from './candlestick-data-10-90.json';
+import candlestickData2575 from './candlestick-data-25-75.json';
+
 export class ApplicationsCandlestickDataGenerator {
   timestamp: any = null;
   dataArray: any[] = [];
@@ -39,6 +42,14 @@ export class ApplicationsCandlestickDataGenerator {
   ];
 
   public timeSlotData: number[] = [];
+
+  getStaticData1090() {
+    return candlestickData1090;
+  }
+
+  getStaticData2575() {
+    return candlestickData2575;
+  }
 
   // generate 100 values
   generateDataPerTimeSlot() {

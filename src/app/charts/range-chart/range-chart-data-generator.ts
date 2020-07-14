@@ -45,6 +45,7 @@ export class RangeChartDataGenerator {
 
   constructor() {
     this.currentDataset = this.generateRandomDataset();
+    console.log('this.currentDataset: ', this.currentDataset);
   }
 
   generateRandomDataset () {

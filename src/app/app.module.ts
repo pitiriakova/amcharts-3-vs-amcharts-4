@@ -22,7 +22,9 @@ import { CandlestickLoginsSeparatedAxisComponent } from './charts/amcharts-candl
 import { ToolbarComponent } from './charts/amcharts-candlestick-page/toolbar/toolbar.component';
 import { RangeChartComponent } from './charts/range-chart/range-chart.component';
 import {RangeChartDataGenerator} from './charts/range-chart/range-chart-data-generator';
-import { ZoomChartComponent } from './charts/zoom-chart/zoom-chart.component';
+import { ZoomChartComponent } from './charts/zoom-charts-page/zoom-chart/zoom-chart.component';
+import {ZoomChartDataGenerator} from './charts/zoom-charts-page/zoom-chart-data-generator';
+import { ZoomChartsPageComponent } from './charts/zoom-charts-page/zoom-charts-page.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +41,8 @@ import { ZoomChartComponent } from './charts/zoom-chart/zoom-chart.component';
     CandlestickLoginsSeparatedAxisComponent,
     ToolbarComponent,
     RangeChartComponent,
-    ZoomChartComponent
+    ZoomChartComponent,
+    ZoomChartsPageComponent
   ],
   imports: [
     BrowserModule,
@@ -50,7 +53,7 @@ import { ZoomChartComponent } from './charts/zoom-chart/zoom-chart.component';
     FormsModule,
     AmChartsModule,
   ],
-  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, RangeChartDataGenerator],
+  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, RangeChartDataGenerator, ZoomChartDataGenerator],
   bootstrap: [AppComponent],
   exports: [ChartInputParametersComponent],
 })
