@@ -1,0 +1,31 @@
+<div class="applications" style="margin-top: 40px">
+  <div class="toggle-bar">
+<!--    <div>-->
+<!--      <input id="applications" type="radio"  [checked]="dataSource==='applications'"-->
+<!--             (change)="onChangeDataSource('applications')"/>-->
+<!--      <label for="applications"><b>Applications</b></label>-->
+<!--    </div>-->
+<!--    <div class="all-apps" *ngIf="dataSource==='applications'">-->
+      <span>Application 1</span>
+      <div class="measurements" *ngFor="let s of applicationsSeriesNames[0]">
+        <input id="app1_{{label}}_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+        <label for="app1_{{label}}_{{s.id}}">{{s.name}}</label>
+      </div>
+      <span>Application 2</span>
+      <div class="measurements" *ngFor="let s of applicationsSeriesNames[1]">
+        <input id="app2_{{label}}_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+        <label for="app2_{{label}}_{{s.id}}">{{s.name}}</label>
+      </div>
+      <span>Application 3</span>
+      <div class="measurements" *ngFor="let s of applicationsSeriesNames[2]">
+        <input id="app3_{{label}}_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+        <label for="app3_{{label}}_{{s.id}}">{{s.name}}</label>
+      </div>
+      <span>Application 4</span>
+      <div class="measurements" *ngFor="let s of applicationsSeriesNames[3]">
+        <input id="app4_{{label}}_{{s.id}}" type="checkbox" (change)="toggleApplicationSeries(s.id)"/>
+        <label for="app4_{{label}}_{{s.id}}">{{s.name}}</label>
+      </div>
+<!--    </div>-->
+  </div>
+</div>

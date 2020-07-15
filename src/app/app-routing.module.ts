@@ -1,14 +1,12 @@
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
-import {Amcharts4Component} from './charts/amcharts4/amcharts4.component';
-import {HighchartsComponent} from './charts/highcharts/highcharts.component';
-import {CanvasjsComponent} from './charts/canvasjs/canvasjs.component';
-import {CandlesticksBaseComponent} from './charts/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
-import {Amcharts4StackedAreaPageComponent} from './charts/amcharts4-stacked-area-page/amcharts4-stacked-area-page.component';
-import {AmchartsCandlestickPageComponent} from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
-import {RangeChartComponent} from './charts/range-chart/range-chart.component';
-import {ZoomChartComponent} from './charts/zoom-charts-page/zoom-chart/zoom-chart.component';
-import {ZoomChartsPageComponent} from './charts/zoom-charts-page/zoom-charts-page.component';
+import {Amcharts4Component} from './charts/performance-tests/amcharts4/amcharts4.component';
+import {HighchartsComponent} from './charts/performance-tests/highcharts/highcharts.component';
+import {CanvasjsComponent} from './charts/performance-tests/canvasjs/canvasjs.component';
+import {Amcharts4StackedAreaPageComponent} from './charts/chart-types/amcharts4-stacked-area-page/amcharts4-stacked-area-page.component';
+import {AmchartsCandlestickPageComponent} from './charts/chart-types/amcharts-candlestick-page/amcharts-candlestick-page.component';
+import {ZoomChartsPageComponent} from './charts/chart-types/zoom-charts-page/zoom-charts-page.component';
+import {RangeChartsPageComponent} from './charts/chart-types/range-charts-page/range-charts-page.component';
 
 const appRoutes: Routes = [
   // { path: 'amcharts3', component: Amcharts3Component },
@@ -17,10 +15,10 @@ const appRoutes: Routes = [
   { path: 'canvasJS', component: CanvasjsComponent },
   { path: 'amcharts4-candlestick-page', component: AmchartsCandlestickPageComponent },
   { path: 'amcharts4-stacked-area-page', component: Amcharts4StackedAreaPageComponent },
-  { path: 'range-chart', component: RangeChartComponent },
+  { path: 'range-chart', component: RangeChartsPageComponent },
   { path: 'zoom-chart', component: ZoomChartsPageComponent },
   { path: '',
-    redirectTo: '/amcharts4',
+    redirectTo: '/zoom-chart',
     pathMatch: 'full'
   }
 ];

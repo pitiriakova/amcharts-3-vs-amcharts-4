@@ -1,0 +1,24 @@
+<div class="chart-container">
+  <div style="display: flex; flex-direction: column">
+    <app-toolbar [applicationsSeriesNames]="applicationsSeriesNames"
+                 [label]="2"
+                 (appSeriesToggled)="toggleSeries($event)">
+    </app-toolbar>
+
+    <div style="display:flex; flex-direction: column; margin-top: 50px;">
+      <button style="cursor: pointer" (click)="generateNewData()"> GENERATE NEW DATA</button>
+      <b style="color: red">Data generation will take time</b>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="chart">
+      <h2>10/90</h2>
+      <div class="chartdiv-simple-candlesticks-10-90" style="width: 1000px; height: 500px"></div>
+    </div>
+    <div class="chart">
+      <h2>25/75</h2>
+      <div class="chartdiv-simple-candlesticks-25-75" style="width: 1000px; height: 500px"></div>
+    </div>
+  </div>
+</div>

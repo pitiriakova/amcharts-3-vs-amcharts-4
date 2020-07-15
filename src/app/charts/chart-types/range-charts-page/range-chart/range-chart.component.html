@@ -1,0 +1,11 @@
+<div class="chart-container">
+
+  <app-toolbar [applicationsSeriesNames]="applicationsSeriesNames"
+               [label]="3"
+               (appSeriesToggled)="toggleSeries($event)">
+  </app-toolbar>
+
+  <figure class="highcharts-figure">
+    <div id="container-range-raw"></div>
+  </figure>
+</div>

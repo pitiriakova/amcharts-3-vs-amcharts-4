@@ -5,26 +5,28 @@ import {AppRoutingModule} from './app-routing.module';
 import {RouterModule} from '@angular/router';
 
 import { AppComponent } from './app.component';
-import {Amcharts3Component} from './charts/amcharts3/amcharts3.component';
-import {Amcharts4Component} from './charts/amcharts4/amcharts4.component';
+import {Amcharts3Component} from './charts/performance-tests/amcharts3/amcharts3.component';
+import {Amcharts4Component} from './charts/performance-tests/amcharts4/amcharts4.component';
 import {CommonModule} from '@angular/common';
 import {AmChartsModule} from '@amcharts/amcharts3-angular';
 import { HeaderComponent } from './shared/header/header.component';
 import {ChartDataService} from './services/chart-data.service';
-import { HighchartsComponent } from './charts/highcharts/highcharts.component';
+import { HighchartsComponent } from './charts/performance-tests/highcharts/highcharts.component';
 import { ChartInputParametersComponent } from './charts/chart-input-parameters/chart-input-parameters.component';
-import { CanvasjsComponent } from './charts/canvasjs/canvasjs.component';
-import { CandlesticksBaseComponent } from './charts/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
-import { Amcharts4StackedAreaPageComponent } from './charts/amcharts4-stacked-area-page/amcharts4-stacked-area-page.component';
-import {LoginTimesCandlestickDataGenerator} from './charts/amcharts-candlestick-page/services/login-times-candlesticks-data-generation';
-import { AmchartsCandlestickPageComponent } from './charts/amcharts-candlestick-page/amcharts-candlestick-page.component';
-import { CandlestickLoginsSeparatedAxisComponent } from './charts/amcharts-candlestick-page/candlestick-logins-separated-axis/candlestick-logins-separated-axis.component';
-import { ToolbarComponent } from './charts/amcharts-candlestick-page/toolbar/toolbar.component';
-import { RangeChartComponent } from './charts/range-chart/range-chart.component';
-import {RangeChartDataGenerator} from './charts/range-chart/range-chart-data-generator';
-import { ZoomChartComponent } from './charts/zoom-charts-page/zoom-chart/zoom-chart.component';
-import {ZoomChartDataGenerator} from './charts/zoom-charts-page/zoom-chart-data-generator';
-import { ZoomChartsPageComponent } from './charts/zoom-charts-page/zoom-charts-page.component';
+import { CanvasjsComponent } from './charts/performance-tests/canvasjs/canvasjs.component';
+import { CandlesticksBaseComponent } from './charts/chart-types/amcharts-candlestick-page/candlesticks-base/candlesticks-base.component';
+import { Amcharts4StackedAreaPageComponent } from './charts/chart-types/amcharts4-stacked-area-page/amcharts4-stacked-area-page.component';
+import {LoginTimesCandlestickDataGenerator} from './services/candlesticks-data-generation';
+import { AmchartsCandlestickPageComponent } from './charts/chart-types/amcharts-candlestick-page/amcharts-candlestick-page.component';
+import { CandlestickLoginsSeparatedAxisComponent } from './charts/chart-types/amcharts-candlestick-page/candlestick-logins-separated-axis/candlestick-logins-separated-axis.component';
+import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { RangeChartAveragesComponent } from './charts/chart-types/range-charts-page/range-chart-averages/range-chart-averages.component';
+import {SmallDatasetGenerator} from './services/small-dataset-generator';
+import { ZoomChartComponent } from './charts/chart-types/zoom-charts-page/zoom-chart/zoom-chart.component';
+import {LargeDatasetGenerator} from './services/large-dataset-generator';
+import { ZoomChartsPageComponent } from './charts/chart-types/zoom-charts-page/zoom-charts-page.component';
+import { RangeChartsPageComponent } from './charts/chart-types/range-charts-page/range-charts-page.component';
+import { RangeChartComponent } from './charts/chart-types/range-charts-page/range-chart/range-chart.component';
 
 @NgModule({
   declarations: [
@@ -40,9 +42,11 @@ import { ZoomChartsPageComponent } from './charts/zoom-charts-page/zoom-charts-p
     AmchartsCandlestickPageComponent,
     CandlestickLoginsSeparatedAxisComponent,
     ToolbarComponent,
-    RangeChartComponent,
+    RangeChartAveragesComponent,
     ZoomChartComponent,
-    ZoomChartsPageComponent
+    ZoomChartsPageComponent,
+    RangeChartsPageComponent,
+    RangeChartComponent
   ],
   imports: [
     BrowserModule,
@@ -53,7 +57,7 @@ import { ZoomChartsPageComponent } from './charts/zoom-charts-page/zoom-charts-p
     FormsModule,
     AmChartsModule,
   ],
-  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, RangeChartDataGenerator, ZoomChartDataGenerator],
+  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, SmallDatasetGenerator, LargeDatasetGenerator],
   bootstrap: [AppComponent],
   exports: [ChartInputParametersComponent],
 })
