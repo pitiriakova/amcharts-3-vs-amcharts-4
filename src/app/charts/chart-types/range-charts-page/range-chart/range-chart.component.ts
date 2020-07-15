@@ -37,7 +37,7 @@ export class RangeChartComponent implements AfterViewInit {
     // console.log('DATA:averagesData: ', averagesData);
     this.chart = Highcharts.chart('container-range-raw', {
       title: {
-        text: 'Applications (min, max, row data)'
+        text: 'Applications (row data and average)'
       },
       plotOptions: {
         series: {
