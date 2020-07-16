@@ -1,4 +1,3 @@
-
 <div class="chart-container">
   <div>
     <app-toolbar [applicationsSeriesNames]="applicationsSeriesNames"
@@ -6,13 +5,18 @@
                  (appSeriesToggled)="toggleSeries($event)">
     </app-toolbar>
 
-<!--    <div style="display:flex; flex-direction: column; margin-top: 50px;">-->
-<!--      <button style="cursor: pointer" (click)="generateNewData()"> GENERATE NEW DATA</button>-->
-<!--      <b style="color: red">Data generation will take time</b>-->
-<!--    </div>-->
+    <!--    <div style="display:flex; flex-direction: column; margin-top: 50px;">-->
+    <!--      <button style="cursor: pointer" (click)="generateNewData()"> GENERATE NEW DATA</button>-->
+    <!--      <b style="color: red">Data generation will take time</b>-->
+    <!--    </div>-->
   </div>
 
-  <figure class="highcharts-figure">
-    <div id="container-zoom"></div>
-  </figure>
+  <div class="charts">
+    <figure class="highcharts-figure">
+      <div id="container-zoom"></div>
+    </figure>
+    <figure class="highcharts-figure">
+      <div id="container-zoom-small"></div>
+    </figure>
+  </div>
 </div>

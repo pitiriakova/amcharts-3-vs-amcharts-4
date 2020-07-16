@@ -8,6 +8,10 @@
   height: 500px;
 }
 
+#container-zoom-small {
+  height: 90px;
+}
+
 button {
   width: 100px;
   height: 40px;

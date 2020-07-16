@@ -18,6 +18,7 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
   data: any;
   averageLineData: any;
   chart: any;
+  chartSmall: any;
   allCheckboxes: any;
 
   constructor(private _smallDatasetGenerator: SmallDatasetGenerator,
@@ -25,16 +26,18 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.data = this._largeDatasetGenerator.getStaticDataSet();
+    this.data = this._largeDatasetGenerator.generateRandomDataset();
     console.log('DATA:this.data: ', this.data);
-    this.averageLineData = this._largeDatasetGenerator.getAveragesBasedOnStaticDataset();
+    this.averageLineData = this._largeDatasetGenerator.getAveragesFromRecentlyGeneratedDataset();
     console.log('this.averageLineData', this.averageLineData);
   }
 
 
   public toggleSeries(id: string) {
     const currentSeries = this.chart.get(id);
+    const currentSeriesSmall = this.chartSmall.get(id + '__average');
     currentSeries.visible ? currentSeries.hide() : currentSeries.show();
+    currentSeriesSmall.visible ? currentSeriesSmall.hide() : currentSeriesSmall.show();
     const currentAverageSeries = this.chart.get(id + '__average');
     currentAverageSeries.visible ? currentAverageSeries.hide() : currentAverageSeries.show();
   }
@@ -60,9 +63,38 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
   }
 
   generateChart() {
+    this.chartSmall = Highcharts.chart('container-zoom-small', {
+      chart: {
+        zoomType: 'x',
+        backgroundColor: 'rgba(97,97,97, 0.1)',
+        ignoreHiddenSeries: true,
+      },
+      xAxis: {
+        gridLineWidth: 0,
+        type: 'datetime',
+        events: {
+          afterSetExtremes: this.afterSetExtremes
+        },
+      },
+      title: {
+        text: ''
+      },
+      yAxis: {
+        gridLineWidth: 0,
+        title: {
+          text: null
+        },
+        min: 0,
+      },
+      legend: {
+        enabled: false
+      }
+    });
+
     this.chart = Highcharts.chart('container-zoom', {
       chart: {
-        zoomType: 'x'
+        zoomType: 'x',
+        ignoreHiddenSeries: true
       },
       title: {
         text: 'Applications (select area to zoom)'
@@ -83,8 +115,7 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
         title: {
           text: null
         },
-        min: 0,
-        max: 35,
+        min: 0
       },
       legend: {
         enabled: false
@@ -113,6 +144,27 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
     const merged = [].concat.apply([], this.applicationsSeriesNames);
     for (let i = 0; i <= merged.length - 1; i++) {
       console.log('this.averageLineData', this.averageLineData);
+
+      this.chartSmall.addSeries({
+        name: merged[i].name,
+        type: 'line',
+        color: colors[i],
+        id: merged[i].id + '__average',
+        zIndex: 0,
+        marker: {
+          enabled: false,
+        },
+        states: {
+          hover: {
+            lineWidth: 2,
+            fillOpacity: 1,
+            enabled: false,
+          }
+        },
+        data: this.averageLineData[merged[i].id],
+        visible: false,
+      });
+
 
       this.chart.addSeries({
         name: merged[i].name,
