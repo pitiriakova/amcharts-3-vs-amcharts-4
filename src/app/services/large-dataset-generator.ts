@@ -104,29 +104,29 @@ export class LargeDatasetGenerator {
   getRandomValue(k) {
     let randomMin, randomMax;
     if (k === 0 || k === 5 || k === 10 || k === 15) {
-      randomMin = Number(((Math.random() * 8) + 7));
-      randomMax = Number(((Math.random() * 11) + 9));
+      randomMin = Math.random() * 8 + 7;
+      randomMax = Math.random() * 11 + 9;
     }
 
     if (k === 1 || k === 6 || k === 11 || k === 16) {
-      randomMin = Number(((Math.random() * 18.5) + 17));
-      randomMax = Number(((Math.random() * 19.5) + 19));
+      randomMin = Math.random() * 18.5 + 17;
+      randomMax = Math.random() * 19.5 + 19;
     }
 
     if (k === 2 || k === 7 || k === 12 || k === 17) {
-      randomMin = Number(((Math.random() * 19) + 18.5));
-      randomMax = Number(((Math.random() * 21) + 20));
+      randomMin = Math.random() * 19 + 18.5;
+      randomMax = Math.random() * 21 + 20;
     }
 
     if (k === 3 || k === 8 || k === 13 || k === 18) {
-      randomMin = Number(((Math.random() * 13) + 12));
-      randomMax = Number(((Math.random() * 15) + 14));
+      randomMin = Math.random() * 13 + 12;
+      randomMax = Math.random() * 15 + 14;
     } else {
-      randomMin = Number(((Math.random() * 0.03) + 0.0001));
-      randomMax = Number(((Math.random() * 0.08)  + 0.04));
+      randomMin = Math.random() * 0.03 + 0.0001;
+      randomMax = Math.random() * 0.08  + 0.04;
     }
 
-    const randomValue = Number(((Math.random() * randomMax) + randomMin).toFixed(4));
+    const randomValue = Number((Math.random() * (randomMax - randomMin) + randomMin).toFixed(4));
 
     return randomValue > 0 ? randomValue : (-randomValue);
   }

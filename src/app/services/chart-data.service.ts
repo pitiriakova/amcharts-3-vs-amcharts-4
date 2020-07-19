@@ -55,6 +55,29 @@ export class ChartDataService {
     return this.sortData(data);
   }
 
+  generateCanvasJsData(dataPointsCount: number, seriesCount: number) {
+    const data = {};
+    const currentDate = new Date();
+    // [{}, {}]
+    for (let i = 1; i <= seriesCount; i++ ) {
+      data[`series${i}`] = [];
+    }
+
+    Array.apply(null, {length: dataPointsCount})
+      .forEach((item, index) => {
+        for (let i = 1; i <= seriesCount; i++ ) {
+          data[`series${i}`].push(
+            {
+              x: this.addDays(currentDate, index),
+              y: (Math.random() * (this.max - this.min + 1) + this.min)
+            }
+          );
+        }
+      });
+
+    return this.sortData(data);
+  }
+
   private sortData(data) {
     for (const key in data) {
       if (data.hasOwnProperty(key)) {

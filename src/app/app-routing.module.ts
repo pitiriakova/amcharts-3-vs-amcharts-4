@@ -7,9 +7,10 @@ import {Amcharts4StackedAreaPageComponent} from './charts/chart-types/amcharts4-
 import {AmchartsCandlestickPageComponent} from './charts/chart-types/amcharts-candlestick-page/amcharts-candlestick-page.component';
 import {ZoomChartsPageComponent} from './charts/chart-types/zoom-charts-page/zoom-charts-page.component';
 import {RangeChartsPageComponent} from './charts/chart-types/range-charts-page/range-charts-page.component';
+import {Amcharts3Component} from './charts/performance-tests/amcharts3/amcharts3.component';
 
 const appRoutes: Routes = [
-  // { path: 'amcharts3', component: Amcharts3Component },
+  { path: 'amcharts3', component: Amcharts3Component },
   { path: 'amcharts4', component: Amcharts4Component },
   { path: 'highcharts', component: HighchartsComponent },
   { path: 'canvasJS', component: CanvasjsComponent },

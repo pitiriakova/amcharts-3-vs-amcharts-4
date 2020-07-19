@@ -26,9 +26,9 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.data = this._largeDatasetGenerator.generateRandomDataset();
+    this.data = this._largeDatasetGenerator.getStaticDataSet();
     console.log('DATA:this.data: ', this.data);
-    this.averageLineData = this._largeDatasetGenerator.getAveragesFromRecentlyGeneratedDataset();
+    this.averageLineData = this._largeDatasetGenerator.getAveragesBasedOnStaticDataset();
     console.log('this.averageLineData', this.averageLineData);
   }
 

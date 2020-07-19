@@ -62,3 +62,7 @@ export function createSeries(id, color, chart) {
   series.tooltipText = '90%:{openValueY.value}\nMin:{lowValueY.value}\nMax:{highValueY.value}\n10%:{valueY.value}\naverage:{average.value}';
   return series;
 }
+
+export function createAverageLine(id, color, chart) {
+  const series = chart.series.push(new am4charts.LineSeries());
+}

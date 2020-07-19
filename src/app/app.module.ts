@@ -27,6 +27,8 @@ import {LargeDatasetGenerator} from './services/large-dataset-generator';
 import { ZoomChartsPageComponent } from './charts/chart-types/zoom-charts-page/zoom-charts-page.component';
 import { RangeChartsPageComponent } from './charts/chart-types/range-charts-page/range-charts-page.component';
 import { RangeChartComponent } from './charts/chart-types/range-charts-page/range-chart/range-chart.component';
+import { ChartsjsComponent } from './charts/performance-tests/chartsjs/chartsjs.component';
+import { FusionchartsComponent } from './charts/performance-tests/fusioncharts/fusioncharts.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +48,9 @@ import { RangeChartComponent } from './charts/chart-types/range-charts-page/rang
     ZoomChartComponent,
     ZoomChartsPageComponent,
     RangeChartsPageComponent,
-    RangeChartComponent
+    RangeChartComponent,
+    ChartsjsComponent,
+    FusionchartsComponent
   ],
   imports: [
     BrowserModule,
