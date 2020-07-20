@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import zoomData from '../charts/chart-types/zoom-charts-page/zoom-chart/zoom-data.json';
 import zoomAverageData from '../charts/chart-types/zoom-charts-page/zoom-chart/zoom-average-data.json';
-import rangeChartMaxMinData from '../charts/chart-types/range-charts-page/range-chart/range-chart-max-min-data.json'
+import rangeChartMaxMinData from '../charts/chart-types/range-charts-page/range-chart/range-chart-max-min-data.json';
 import {appIds} from '../shared/applications-series-ids';
 
 @Injectable({
@@ -76,14 +76,14 @@ export class LargeDatasetGenerator {
       for (let seriesDataIndex = 0; seriesDataIndex < this.data[serieName].length; seriesDataIndex++) {
 
         // if first value per timeslot
-        if (seriesDataIndex % 307 === 0) {
+        if (seriesDataIndex % 107 === 0) {
           if (seriesDataIndex !== 0) {
-            currentTimeSlot = this.data[serieName][seriesDataIndex - 307][0];
-            averages[serieName].push([currentTimeSlot, Number((allTimeSlotData.reduce((a, b) => a + b, 0) / 300).toFixed(4))]);
+            currentTimeSlot = this.data[serieName][seriesDataIndex - 107][0];
+            averages[serieName].push([currentTimeSlot, Number((allTimeSlotData.reduce((a, b) => a + b, 0) / 107).toFixed(4))]);
           }
-          if (seriesDataIndex >= 1535) {
+          if (seriesDataIndex >= 511) {
             currentTimeSlot = this.data[serieName][seriesDataIndex][0];
-            averages[serieName].push([currentTimeSlot, Number((allTimeSlotData.reduce((a, b) => a + b, 0) / 300).toFixed(4))]);
+            averages[serieName].push([currentTimeSlot, Number((allTimeSlotData.reduce((a, b) => a + b, 0) / 107).toFixed(4))]);
           }
 
           allTimeSlotData = [];
@@ -106,19 +106,13 @@ export class LargeDatasetGenerator {
     if (k === 0 || k === 5 || k === 10 || k === 15) {
       randomMin = Math.random() * 8 + 7;
       randomMax = Math.random() * 11 + 9;
-    }
-
-    if (k === 1 || k === 6 || k === 11 || k === 16) {
+    } else if (k === 1 || k === 6 || k === 11 || k === 16) {
       randomMin = Math.random() * 18.5 + 17;
       randomMax = Math.random() * 19.5 + 19;
-    }
-
-    if (k === 2 || k === 7 || k === 12 || k === 17) {
+    } else if (k === 2 || k === 7 || k === 12 || k === 17) {
       randomMin = Math.random() * 19 + 18.5;
       randomMax = Math.random() * 21 + 20;
-    }
-
-    if (k === 3 || k === 8 || k === 13 || k === 18) {
+    } else if (k === 3 || k === 8 || k === 13 || k === 18) {
       randomMin = Math.random() * 13 + 12;
       randomMax = Math.random() * 15 + 14;
     } else {
@@ -139,7 +133,7 @@ export class LargeDatasetGenerator {
           this.secondsToSet = 0;
           this.minutesToSet = this.minutesToSet + 1;
         } else {
-          this.secondsToSet = this.secondsToSet + 2;
+          this.secondsToSet = this.secondsToSet + 6;
         }
 
         this.oneHourData.push([this.getTimeStamp(), this.getRandomValue(i)]);

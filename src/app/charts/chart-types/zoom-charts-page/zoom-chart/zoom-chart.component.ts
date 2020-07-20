@@ -1,12 +1,10 @@
 import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {applicationsSeriesNames} from '../../../../shared/applications-series-names';
 
-import * as Highcharts from 'highcharts';
-import highchartsMore from 'highcharts/highcharts-more';
+import * as Highstock from 'highcharts/highstock';
 import {SmallDatasetGenerator} from '../../../../services/small-dataset-generator';
 import {colors, rgbColorsHighOpacity} from '../../../../shared/shared-chart-settings';
 import {LargeDatasetGenerator} from '../../../../services/large-dataset-generator';
-highchartsMore(Highcharts);
 
 @Component({
   selector: 'app-zoom-chart',
@@ -18,8 +16,8 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
   data: any;
   averageLineData: any;
   chart: any;
-  chartSmall: any;
   allCheckboxes: any;
+  selectedSeries: any[] = [];
 
   constructor(private _smallDatasetGenerator: SmallDatasetGenerator,
               private _largeDatasetGenerator: LargeDatasetGenerator) {
@@ -35,26 +33,20 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
 
   public toggleSeries(id: string) {
     const currentSeries = this.chart.get(id);
-    const currentSeriesSmall = this.chartSmall.get(id + '__average');
     currentSeries.visible ? currentSeries.hide() : currentSeries.show();
-    currentSeriesSmall.visible ? currentSeriesSmall.hide() : currentSeriesSmall.show();
     const currentAverageSeries = this.chart.get(id + '__average');
     currentAverageSeries.visible ? currentAverageSeries.hide() : currentAverageSeries.show();
-  }
+    currentAverageSeries.showInNavigator = currentAverageSeries.visible;
 
-  afterSetExtremes(e) {
-    const { chart } = e.target;
-    // chart.showLoading('Loading data from server...');
-    console.log('e.min: ', new Date(e.min));
-    console.log('e.max: ', new Date(e.max));
-    // this._largeDatasetGenerator.getDetailedData(e.min, e.max);
-
-    // fetch(`${dataURL}?start=${Math.round(e.min)}&end=${Math.round(e.max)}`)
-    //   .then(res => res.ok && res.json())
-    //   .then(data => {
-    //     chart.series[0].setData(data);
-    //     chart.hideLoading();
-    //   }).catch(error => console.error(error.message));
+    // const navigatorSeries = this.chart.get('highcharts-navigator-series');
+    // console.log('navigatorSeries: ', navigatorSeries);
+    // currentAverageSeries.visible ? navigatorSeries.show() : navigatorSeries.hide();
+    // this.chart.series.forEach(s => {
+    //   if (s.visible) {
+    //     navigatorSeries.setData([navigatorSeries.data, ...currentAverageSeries.options.data], false);
+    //     currentAverageSeries.visible ? navigatorSeries.show() : navigatorSeries.hide();
+    //   }
+    // })
   }
 
   ngAfterViewInit(): void {
@@ -63,47 +55,29 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
   }
 
   generateChart() {
-    this.chartSmall = Highcharts.chart('container-zoom-small', {
+    const merged = [].concat.apply([], this.applicationsSeriesNames);
+    this.chart = Highstock.stockChart('container-zoom', {
       chart: {
-        zoomType: 'x',
-        backgroundColor: 'rgba(97,97,97, 0.1)',
-        ignoreHiddenSeries: true,
+        zoomType: 'xy'
       },
-      xAxis: {
-        gridLineWidth: 0,
-        type: 'datetime',
-        events: {
-          afterSetExtremes: this.afterSetExtremes
-        },
+      navigator: {
+        series: {
+          // color: '#FF00FF',
+          lineWidth: 2
+        }
       },
-      title: {
-        text: ''
+      rangeSelector: {
+        selected: 1
       },
-      yAxis: {
-        gridLineWidth: 0,
-        title: {
-          text: null
-        },
-        min: 0,
-      },
-      legend: {
-        enabled: false
-      }
-    });
-
-    this.chart = Highcharts.chart('container-zoom', {
-      chart: {
-        zoomType: 'x',
-        ignoreHiddenSeries: true
+      scrollbar: {
+        enabled: true
       },
       title: {
         text: 'Applications (select area to zoom)'
       },
       xAxis: {
         type: 'datetime',
-        events: {
-          afterSetExtremes: this.afterSetExtremes
-        },
+        events: {}
       },
 
       boost: {
@@ -122,6 +96,7 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
       },
       plotOptions: {
         series: {
+          // showInNavigator: true,
           marker: {
             radius: 2
           },
@@ -141,31 +116,8 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
         }
       },
     });
-    const merged = [].concat.apply([], this.applicationsSeriesNames);
+
     for (let i = 0; i <= merged.length - 1; i++) {
-      console.log('this.averageLineData', this.averageLineData);
-
-      this.chartSmall.addSeries({
-        name: merged[i].name,
-        type: 'line',
-        color: colors[i],
-        id: merged[i].id + '__average',
-        zIndex: 0,
-        marker: {
-          enabled: false,
-        },
-        states: {
-          hover: {
-            lineWidth: 2,
-            fillOpacity: 1,
-            enabled: false,
-          }
-        },
-        data: this.averageLineData[merged[i].id],
-        visible: false,
-      });
-
-
       this.chart.addSeries({
         name: merged[i].name,
         type: 'scatter',
@@ -179,7 +131,6 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
           states: {
             hover: {
               enabled: true,
-              // lineColor: rgbColors[i]
             }
           }
         },
@@ -200,6 +151,7 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
         color: colors[i],
         id: merged[i].id + '__average',
         zIndex: 0,
+        showInNavigator: true,
         marker: {
           enabled: false,
         },
@@ -213,15 +165,22 @@ export class ZoomChartComponent implements OnInit, AfterViewInit {
         data: this.averageLineData[merged[i].id],
         visible: false,
       });
+
+      //
+      // this.chart.addSeries({
+      //   type: 'area',
+      //   name: 'Custom navigator',
+      //   data: merged[i].id,
+      //   color: '#000000',
+      //   fillOpacity: 0.4,
+      //   lineWidth: 1,
+      //   xAxis: 1,
+      //   yAxis: 1,
+      //   enableMouseTracking: false,
+      //   showInLegend: false,
+      //   showInNavigator: false,
+      //   animation: false,
+      // });
     }
   }
-
-  // public generateNewData() {
-  //   for (let i = 0; i < this.allCheckboxes.length; i++) {
-  //     this.allCheckboxes[i].checked = false;
-  //   }
-  //   this.data = this._largeDatasetGenerator.generateRandomDataset();
-  //   this.averageLineData = this._largeDatasetGenerator.getAveragesFromRecentlyGeneratedDataset();
-  //   this.generateChart();
-  // }
 }

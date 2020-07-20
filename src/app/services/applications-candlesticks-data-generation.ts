@@ -27,8 +27,24 @@ export class ApplicationsCandlestickDataGenerator {
   // generate 100 values
   generateDataPerTimeSlot() {
     for (let i = 0; i <= 100; i++) {
-      const randomMin = Number((Math.random() * 0.3 + 0.9));
-      const randomMax = Number((Math.random() * 1.5 + 2.6));
+      let randomMin, randomMax;
+
+      if (i === 0 || i === 5 || i === 10 || i === 15) {
+        randomMin = Math.random() * 8 + 7;
+        randomMax = Math.random() * 11 + 9;
+      } else if (i === 1 || i === 6 || i === 11 || i === 16) {
+        randomMin = Math.random() * 18.5 + 17;
+        randomMax = Math.random() * 19.5 + 19;
+      } else if (i === 2 || i === 7 || i === 12 || i === 17) {
+        randomMin = Math.random() * 19 + 18.5;
+        randomMax = Math.random() * 21 + 20;
+      } else if (i === 3 || i === 8 || i === 13 || i === 18) {
+        randomMin = Math.random() * 13 + 12;
+        randomMax = Math.random() * 15 + 14;
+      } else {
+        randomMin = Math.random() * 0.03 + 0.0001;
+        randomMax = Math.random() * 0.08  + 0.04;
+      }
 
       this.timeSlotData.push(Number((Math.random() * randomMax + randomMin).toFixed(4)));
     }

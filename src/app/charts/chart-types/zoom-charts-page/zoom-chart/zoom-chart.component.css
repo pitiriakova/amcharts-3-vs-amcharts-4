@@ -16,3 +16,6 @@ button {
   width: 100px;
   height: 40px;
 }
+::ng-deep .highcharts-range-selector-group, .highcharts-scrollbar {
+  display: none;
+}
