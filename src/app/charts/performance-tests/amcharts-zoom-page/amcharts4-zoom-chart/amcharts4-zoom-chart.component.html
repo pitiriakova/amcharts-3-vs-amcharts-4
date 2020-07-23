@@ -1,0 +1,14 @@
+<div class="chart-container">
+  <div>
+    <app-toolbar [applicationsSeriesNames]="applicationsSeriesNames"
+                 [label]="4"
+                 (appSeriesToggled)="toggleSeries($event)">
+    </app-toolbar>
+  </div>
+
+  <div class="charts">
+      <div id="container-zoom"></div>
+  </div>
+
+  renderTimeResult: {{renderTimeResult}}
+</div>

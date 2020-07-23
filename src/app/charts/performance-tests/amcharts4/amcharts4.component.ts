@@ -27,6 +27,7 @@ export class Amcharts4Component implements AfterViewInit, OnDestroy {
 
   public ngAfterViewInit(): void {
     if (this.chartData) {
+      console.log('this.chartData: ', this.chartData);
       this.renderChart(ChartSettings.DEFAULT_SERIES_COUNT);
     }
   }

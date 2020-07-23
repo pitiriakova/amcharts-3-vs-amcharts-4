@@ -29,28 +29,33 @@ import { RangeChartsPageComponent } from './charts/chart-types/range-charts-page
 import { RangeChartComponent } from './charts/chart-types/range-charts-page/range-chart/range-chart.component';
 import { ChartsjsComponent } from './charts/performance-tests/chartsjs/chartsjs.component';
 import { FusionchartsComponent } from './charts/performance-tests/fusioncharts/fusioncharts.component';
+import { Amcharts4ZoomChartComponent } from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart/amcharts4-zoom-chart.component';
+import {Amcharts4ZoomChartDataGenerator} from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart/amcharts4-zoom-chart-data-generator';
+import { Amcharts4OptimizedZoomChartComponent } from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart-optimized/amcharts4-zoom-chart-optimized.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    Amcharts3Component,
-    Amcharts4Component,
+    // Amcharts3Component,
+    // Amcharts4Component,
     HeaderComponent,
-    HighchartsComponent,
+    // HighchartsComponent,
     ChartInputParametersComponent,
-    CanvasjsComponent,
-    CandlesticksBaseComponent,
-    Amcharts4StackedAreaPageComponent,
-    AmchartsCandlestickPageComponent,
-    CandlestickLoginsSeparatedAxisComponent,
+    // CanvasjsComponent,
+    // CandlesticksBaseComponent,
+    // Amcharts4StackedAreaPageComponent,
+    // AmchartsCandlestickPageComponent,
+    // CandlestickLoginsSeparatedAxisComponent,
     ToolbarComponent,
-    RangeChartAveragesComponent,
-    ZoomChartComponent,
-    ZoomChartsPageComponent,
-    RangeChartsPageComponent,
-    RangeChartComponent,
-    ChartsjsComponent,
-    FusionchartsComponent
+    // RangeChartAveragesComponent,
+    // ZoomChartComponent,
+    // ZoomChartsPageComponent,
+    // RangeChartsPageComponent,
+    // RangeChartComponent,
+    // ChartsjsComponent,
+    // FusionchartsComponent,
+    Amcharts4ZoomChartComponent,
+    Amcharts4OptimizedZoomChartComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +66,7 @@ import { FusionchartsComponent } from './charts/performance-tests/fusioncharts/f
     FormsModule,
     AmChartsModule,
   ],
-  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, SmallDatasetGenerator, LargeDatasetGenerator],
+  providers: [ChartDataService, LoginTimesCandlestickDataGenerator, SmallDatasetGenerator, LargeDatasetGenerator, Amcharts4ZoomChartDataGenerator],
   bootstrap: [AppComponent],
   exports: [ChartInputParametersComponent],
 })
