@@ -37,7 +37,7 @@ import { Amcharts4OptimizedZoomChartComponent } from './charts/performance-tests
   declarations: [
     AppComponent,
     // Amcharts3Component,
-    // Amcharts4Component,
+    Amcharts4Component,
     HeaderComponent,
     // HighchartsComponent,
     ChartInputParametersComponent,

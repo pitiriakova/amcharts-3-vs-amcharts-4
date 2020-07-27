@@ -31,7 +31,9 @@ export class ToolbarComponent implements OnInit, OnChanges {
     this.percentileSwitched.emit({p1, p2});
   }
 
-  toggleApplicationSeries(id) {
-    this.appSeriesToggled.emit(id);
+  toggleApplicationSeries($event, id) {
+    console.log('$event, ', $event.target.checked);
+    console.log('id: ', id)
+    this.appSeriesToggled.emit({id, checked: $event.target.checked});
   }
 }

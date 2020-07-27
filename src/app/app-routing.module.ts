@@ -13,7 +13,7 @@ import {Amcharts4OptimizedZoomChartComponent} from './charts/performance-tests/a
 
 const appRoutes: Routes = [
   // { path: 'amcharts3', component: Amcharts3Component },
-  // { path: 'amcharts4', component: Amcharts4Component },
+  { path: 'amcharts4', component: Amcharts4Component },
   // { path: 'highcharts', component: HighchartsComponent },
   // { path: 'canvasJS', component: CanvasjsComponent },
   // { path: 'amcharts4-candlestick-page', component: AmchartsCandlestickPageComponent },

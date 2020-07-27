@@ -12,9 +12,8 @@ import {Amcharts4ZoomChartDataGenerator} from '../amcharts4-zoom-chart/amcharts4
   templateUrl: './amcharts4-zoom-chart-optimized.component.html',
   styleUrls: ['./amcharts4-zoom-chart-optimized.component.css']
 })
-export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnInit, OnDestroy {
-  series: any;
-  merged: any;
+export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDestroy {
+
   constructor(private zone: NgZone, private cdRef: ChangeDetectorRef, private _dataService: Amcharts4ZoomChartDataGenerator, private chartDataService: ChartDataService) {
     this.chartData = this._dataService.getStaticOptimizedDataset();
     // this.series = this._dataService.getSeriesFromStaticDataset();
@@ -22,7 +21,14 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnIn
 
     this.merged = [].concat.apply([], this.applicationsSeriesNames);
   }
+
   static dataMode = 'average';
+  series: any;
+  merged: any;
+  valueAxis: any;
+  dateAxis: any;
+  minZoom: number;
+  maxZoom: number;
   public chartData: any;
   private chart: am4charts.XYChart;
   private colors = rgbColorsHighOpacity;
@@ -30,59 +36,111 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnIn
   public result = 0;
   public applicationsSeriesNames = applicationsSeriesNames;
   scrollbarX: any;
-  static zoomedFirstTime = true;
-
-  public ngOnInit () {
-
-  }
+  zoomedArea: any;
 
   public ngAfterViewInit(): void {
     if (this.chartData) {
-
-      am4core.options.queue = true;
-      console.time('renderChart ');
+      this.zoomedArea = this.chartData;
       this.renderChart(ChartSettings.DEFAULT_SERIES_COUNT);
-      console.timeEnd('renderChart ');
     }
   }
 
-  toggleSeries(id: string) {
-    // toggle main series
-    if (Amcharts4OptimizedZoomChartComponent.dataMode === 'average') {
-      am4core.options.minPolylineStep = 10;
-      this.chart.series.each(s => {
-        if (s.id === id + '__average') {
-          console.log('this.chart.scrollbarX11111: ', s);
-          s.hidden ? s.show() : s.hide();
-        }
-      });
-    } else if (Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
-      am4core.options.minPolylineStep = 1;
-      this.chart.series.each(s => {
-        if (s.id === id) {
-          console.log('this.chart.scrollbarX11111: ', s);
-          s.hidden ? s.show() : s.hide();
-        }
-      });
-    }
+  hideRawAndShowAverages() {
+    Amcharts4OptimizedZoomChartComponent.dataMode = 'average';
+    const activeRawSeries = this.chart.series.values.filter(s => s.hidden === false);
+    console.log('currentActiveSeriesIds: ', activeRawSeries);
 
-    // toggle scrollbar series
-    this.scrollbarX.scrollbarChart.series.each(s => {
-      if (s.dataFields.valueY === id + '__average') {
-        console.log('s.id' , s.dataFields.valueY);
-        s.isHidden ? s.show() : s.hide();
+    activeRawSeries.forEach((cas, index) => {
+      const currentAverageSeries = this.chart.series.values.find(v => v.id === cas.id + '__average');
+      console.log('currentAverageSeries: ', currentAverageSeries);
+      if (currentAverageSeries) {
+        currentAverageSeries.show();
+        cas.hide();
+      } else {
+        cas.hide();
+        this.createAverageSeries(cas.id + '__average', index);
       }
     });
   }
 
+  hideAverageAndShowRawData() {
+    Amcharts4OptimizedZoomChartComponent.dataMode = 'raw';
+
+    const activeAverageSeries = this.chart.series.values.filter(s => s.hidden === false);
+
+    activeAverageSeries.forEach((cas, index) => {
+      const currentRawSeries = this.chart.series.values.find(v => v.id + '__average' === cas.id);
+      if (currentRawSeries) {
+        currentRawSeries.show();
+        cas.hide();
+      } else {
+        cas.hide();
+        this.createSeries(cas.id.replace('__average', ''), index);
+      }
+    });
+  }
+
+  toggleSeries(data: { id: string, checked: boolean }) {
+    if (this.chart.series.values.length === 0) {
+      this.createAverageSeries(data.id, 4);
+    } else {
+      const moreThan500pointsToShow = this.checkForPointsCount();
+
+      if (moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'average') {
+        const checkedAverageSeries = this.chart.series.values.find(s => s.id === data.id + '__average');
+
+        if (checkedAverageSeries) {
+          data.checked ? checkedAverageSeries.show() : checkedAverageSeries.hide();
+          this.chart.invalidateData();
+        } else {
+          this.createAverageSeries(data.id, 5);
+        }
+      }
+
+      if (moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
+        this.hideRawAndShowAverages();
+
+        const checkedAverageSeries = this.chart.series.values.find(s => s.id === data.id + '__average');
+        if (checkedAverageSeries) {
+          data.checked ? checkedAverageSeries.show() : checkedAverageSeries.hide();
+          this.chart.invalidateData();
+        } else {
+          this.createAverageSeries(data.id, 5);
+        }
+      }
+
+      if (!moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
+        const checkedRawSeries = this.chart.series.values.find(s => s.id.replace('__average', '') === data.id);
+
+        if (checkedRawSeries) {
+          data.checked ? checkedRawSeries.show() : checkedRawSeries.hide();
+          this.chart.invalidateData();
+        } else {
+          this.createSeries(data.id, 4);
+        }
+      }
+
+      if (!moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'average') {
+        this.hideAverageAndShowRawData();
+
+        const checkedRawSeries = this.chart.series.values.find(s => s.id.replace('__average', '') === data.id);
+
+        if (checkedRawSeries) {
+          data.checked ? checkedRawSeries.show() : checkedRawSeries.hide();
+          this.chart.invalidateData();
+        } else {
+          this.createSeries(data.id, 4);
+        }
+      }
+    }
+  }
+
   public renderChart(seriesCount: number): void {
-    // this.zone.runOutsideAngular(() => {
+    this.zone.runOutsideAngular(() => {
       this.chart = am4core.create('container-zoom-optimized', am4charts.XYChart);
       this.chart.dateFormatter.dateFormat = 'HH:mm:ss';
       this.chart.data = this.chartData;
-    this.chart.numberFormatter.numberFormat = '#.0';
-
-      // this.chart.events.on("zoomed", this.onZoomEvent);
+      this.chart.numberFormatter.numberFormat = '#.0';
 
       const startRenderTime = new Date();
       this.chart.events.on('ready', () => {
@@ -94,121 +152,153 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnIn
 
       this.chart.paddingRight = 20;
       this.chart.cursor = new am4charts.XYCursor();
-    console.time('createValueAxis');
-      this.createValueAxis();
-    console.timeEnd('createValueAxis');
-
-    var start = window.performance.now();
+      this.valueAxis = this.createValueAxis();
       this.createDateAxis();
-    var end = window.performance.now();
-    var time = end - start;
-    console.log('timetimetimetime: ', time);
-
       this.scrollbarX = new am4charts.XYChartScrollbar();
-      const allSeriesArray = [];
-      const averageSeriesArray = [];
+      this.chart.scrollbarX = this.scrollbarX;
+      this.chart.scrollbarX.events.on('up', this.dateAxisChanged.bind(this));
+      // TODO: back to average series
+      this.chart.scrollbarX.events.on('down', this.zoomStarted.bind(this));
+    });
+  }
 
-      for (let i = 1; i <= this.merged.length - 1; i++) {
-        const series = this.createSeries(this.merged[i], i);
-        const averageSeries = this.createAverageSeries(this.merged[i], i);
-        allSeriesArray.push(series);
-        averageSeriesArray.push(averageSeries);
-        this.chart.series.push(series);
-        this.chart.series.push(averageSeries);
-
-        if (i === this.merged.length - 1) {
-          averageSeriesArray.forEach(s => this.scrollbarX.series.push(s));
-          this.chart.scrollbarX = this.scrollbarX;
-          // this.customizeGrip(this.chart.scrollbarX.startGrip);
-          // this.customizeGrip(this.chart.scrollbarX.endGrip);
-        }
-      }
-      console.log('this.chart.series: ', this.chart.series);
-    // });
+  zoomStarted() {
+    if (Amcharts4OptimizedZoomChartComponent.dataMode === 'average') {
+      return;
+    } else {
+      console.log('ZOOMED OUT, SWITCH TO AVERAGE');
+      this.hideRawAndShowAverages();
+    }
   }
 
   private createValueAxis(): void {
-    const valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
-    valueAxis.tooltip.disabled = true;
-    valueAxis.renderer.minWidth = 35;
-    valueAxis.min = 0;
+    this.valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
+    this.valueAxis.tooltip.disabled = true;
+    this.valueAxis.renderer.minWidth = 35;
+    this.valueAxis.min = 0;
   }
 
   private createDateAxis(): void {
-    const dateAxis = this.chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.renderer.grid.template.location = 0;
-    dateAxis.renderer.minGridDistance = 80;
-    dateAxis.skipEmptyPeriods = true;
-    dateAxis.groupData = true;
-    dateAxis.groupCount = 100;
+    this.dateAxis = this.chart.xAxes.push(new am4charts.DateAxis());
+    this.dateAxis.renderer.grid.template.location = 0;
+    this.dateAxis.renderer.minGridDistance = 80;
+    this.dateAxis.skipEmptyPeriods = true;
+    // this.dateAxis.groupData = true;
+    // this.dateAxis.groupCount = 100;
     // dateAxis.min = this.chartData[0].timestamp;
     // dateAxis.max = this.chartData[this.chartData.length - 1].timestamp;
-    dateAxis.startLocation = 0;
-    dateAxis.endLocation = 1;
-    dateAxis.renderer.grid.template.location = 0;
+    this.dateAxis.startLocation = 0;
+    this.dateAxis.endLocation = 1;
+    this.dateAxis.renderer.grid.template.location = 0;
     // dateAxis.groupIntervals.setAll([
     //   { timeUnit: "second", count: 1 },
     // ]);
 
-    console.time('dateAxisChanged');
-    dateAxis.events.on('selectionextremeschanged', this.dateAxisChanged);
-    console.timeEnd('dateAxisChanged');
+    // this.dateAxis.skipRangeEvent = true;
+    // this.dateAxis.trackable = false;
+    this.dateAxis.events.on('rangechangeended', (e) => {
+      this.minZoom = e.target.minZoomed;
+      this.maxZoom = e.target.maxZoomed;
+    });
 
   }
 
-  dateAxisChanged (e) {
-    if (Amcharts4OptimizedZoomChartComponent.zoomedFirstTime) {
-      return;
+  private createAverageSeries(serieId: string, index: number): any {
+    console.log('SHOULD CREATE AVERAGE SERIES');
+    const series = this.chart.series.push(new am4charts.LineSeries());
+    series.id = serieId + '__average';
+    series.dataFields.dateX = 'timestamp';
+    series.dataFields.valueY = `${serieId}__average`;
+    series.stroke = am4core.color(`${this.colors[index]}`);
+    this.scrollbarX.series.push(series);
+  }
+
+  private createSeries(serieId: string, index: number): any {
+    console.log('SHOULD CREATE RAW SERIES');
+    console.log('serieId: ', serieId);
+    const series = this.chart.series.push(new am4charts.LineSeries());
+
+    series.id = serieId;
+    series.dataFields.dateX = 'timestamp';
+    series.dataFields.valueY = `${serieId}`;
+    series.strokeOpacity = 0;
+
+    const bullet = series.bullets.push(new am4charts.Bullet());
+    const roundBullet = bullet.createChild(am4core.Circle);
+    bullet.fill = am4core.color(`${this.colors[index]}`);
+    roundBullet.width = 10;
+    roundBullet.height = 10;
+    roundBullet.strokeWidth = 0;
+    series.tooltipText = '{valueY.value}';
+  }
+
+  public ngOnDestroy(): void {
+    this.zone.runOutsideAngular(() => {
+      if (this.chart) {
+        this.chart.dispose();
+      }
+    });
+  }
+
+  switchFromRawToAverages() {
+    Amcharts4OptimizedZoomChartComponent.dataMode = 'average';
+    const activeRawSeries = this.chart.series.values.filter(s => s.hidden === false);
+    console.log('currentActiveSeriesIds: ', activeRawSeries);
+
+    activeRawSeries.forEach((cas, index) => {
+      const currentAverageSeries = this.chart.series.values.find(v => v.id === cas.id + '__average');
+      console.log('currentAverageSeries: ', currentAverageSeries);
+      if (currentAverageSeries) {
+        currentAverageSeries.show();
+        cas.hide();
+      }
+    });
+  }
+
+  switchFromAveragesToRaw() {
+
+  }
+
+  checkForPointsCount(): boolean {
+    const currentActiveSeries = this.chart.series.values.filter(s => s.hidden === false);
+    let pointsCount = 0;
+
+    if (Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
+      this.zoomedArea.forEach(measurementsData => {
+        currentActiveSeries.map(cas => {
+          if (Object.keys(measurementsData).find(md => md === cas.id)) {
+            pointsCount = pointsCount + 1;
+          }
+        });
+      });
     } else {
-      Amcharts4OptimizedZoomChartComponent.zoomedFirstTime = false;
-
-      const start = e.target.minZoomed;
-      const end = e.target.maxZoomed;
-
-      console.log(' e.target: ', e);
-      const updatedData = e.target.chart.data.filter(cd => {
-        if (cd.timestamp > start && cd.timestamp < end) {
-          return cd;
-        }
+      this.zoomedArea.forEach(measurementsData => {
+        currentActiveSeries.map(cas => {
+          if (Object.keys(measurementsData).find(md => md + '__average' === cas.id)) {
+            pointsCount = pointsCount + 1;
+          }
+        });
       });
-
-      let pointsCount = 0;
-      updatedData.forEach(measurementsData => {
-        // minus one because we dont need to count timespan
-        pointsCount = pointsCount + Object.keys(measurementsData).length - 1;
-
-        if (pointsCount > 500) {
-          Amcharts4OptimizedZoomChartComponent.dataMode = 'average';
-          am4core.options.minPolylineStep = 10;
-
-          const currentActiveSeries = e.target.chart.series.values.filter(s => s.isHidden === false);
-
-          currentActiveSeries.forEach(cas => {
-            e.target.chart.series.values.forEach(s => {
-              if (cas.id + '__average' === s.id) {
-                s.show();
-                cas.hide();
-              }
-            });
-          });
-          return;
-        } else {
-          Amcharts4OptimizedZoomChartComponent.dataMode = 'raw';
-          // show raw data series
-          const currentActiveSeries = e.target.chart.series.values.filter(s => s.isHidden === false);
-
-          currentActiveSeries.forEach(cas => {
-            e.target.chart.series.values.forEach(s => {
-              if (cas.id === s.id + '__average') {
-                s.show();
-                cas.hide();
-              }
-            });
-          });
-        }
-      });
-      console.log(' e.target.pointsCount: ', pointsCount);
     }
+
+    console.log('RAW DATA (POINTS COUNT) FOR VISIBLE SERIES: ', pointsCount);
+
+    return pointsCount > 500;
+  }
+
+  dateAxisChanged(e) {
+    console.log('ZOOMED TO NEW AREA');
+    this.zoomedArea = e.target.chart.data.filter(cd => {
+      if (cd.timestamp > this.minZoom && cd.timestamp < this.maxZoom) {
+        return cd;
+      }
+    });
+
+    console.log('ALL AVAILABLE RAW DATA FOR ZOOMED AREA: ', this.zoomedArea);
+
+    const moreThan500Points = this.checkForPointsCount();
+    console.log('MORE THAN 500 POINTS TO SHOW: ', moreThan500Points);
+    (moreThan500Points) ? this.hideRawAndShowAverages() : this.hideAverageAndShowRawData();
   }
 
   // Style scrollbar
@@ -237,43 +327,4 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnIn
   //   line.valign = 'middle';
   //
   // }
-
-  private createAverageSeries(serieInfo: {id: string, name: string}, index: number): any {
-    const series = new am4charts.LineSeries();
-    series.id = serieInfo.id + '__average';
-    series.dataFields.dateX = 'timestamp';
-    series.dataFields.valueY = `${serieInfo.id}__average`;
-    series.stroke = am4core.color(`${this.colors[index]}`);
-    series.hidden = true;
-    return series;
-  }
-
-  private createSeries(serieInfo: {id: string, name: string}, index: number): any {
-    const series = new am4charts.LineSeries();
-
-    series.id = serieInfo.id;
-    series.dataFields.dateX = 'timestamp';
-    series.dataFields.valueY = `${serieInfo.id}`;
-    series.strokeOpacity = 0;
-
-    const bullet = series.bullets.push(new am4charts.Bullet());
-    const roundBullet = bullet.createChild(am4core.Circle);
-    bullet.fill = am4core.color(`${this.colors[index]}`);
-    roundBullet.width = 10;
-    roundBullet.height = 10;
-    roundBullet.strokeWidth = 0;
-    series.tooltipText = '{valueY.value}';
-
-    series.hidden = true;
-    return series;
-  }
-
-  public ngOnDestroy(): void {
-    this.zone.runOutsideAngular(() => {
-      if (this.chart) {
-        this.chart.dispose();
-      }
-    });
-  }
-
 }
