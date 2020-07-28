@@ -32,6 +32,7 @@ import { FusionchartsComponent } from './charts/performance-tests/fusioncharts/f
 import { Amcharts4ZoomChartComponent } from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart/amcharts4-zoom-chart.component';
 import {Amcharts4ZoomChartDataGenerator} from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart/amcharts4-zoom-chart-data-generator';
 import { Amcharts4OptimizedZoomChartComponent } from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart-optimized/amcharts4-zoom-chart-optimized.component';
+import { AmchartsZoomDynamicSeriesComponent } from './charts/performance-tests/amcharts-zoom-page/amcharts-zoom-dynamic-series/amcharts-zoom-dynamic-series.component';
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { Amcharts4OptimizedZoomChartComponent } from './charts/performance-tests
     // ChartsjsComponent,
     // FusionchartsComponent,
     Amcharts4ZoomChartComponent,
-    Amcharts4OptimizedZoomChartComponent
+    Amcharts4OptimizedZoomChartComponent,
+    AmchartsZoomDynamicSeriesComponent
   ],
   imports: [
     BrowserModule,

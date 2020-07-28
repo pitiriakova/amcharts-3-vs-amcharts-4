@@ -10,6 +10,7 @@ import {RangeChartsPageComponent} from './charts/chart-types/range-charts-page/r
 import {Amcharts3Component} from './charts/performance-tests/amcharts3/amcharts3.component';
 import {Amcharts4ZoomChartComponent} from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart/amcharts4-zoom-chart.component';
 import {Amcharts4OptimizedZoomChartComponent} from './charts/performance-tests/amcharts-zoom-page/amcharts4-zoom-chart-optimized/amcharts4-zoom-chart-optimized.component';
+import {AmchartsZoomDynamicSeriesComponent} from './charts/performance-tests/amcharts-zoom-page/amcharts-zoom-dynamic-series/amcharts-zoom-dynamic-series.component';
 
 const appRoutes: Routes = [
   // { path: 'amcharts3', component: Amcharts3Component },
@@ -22,6 +23,7 @@ const appRoutes: Routes = [
   // { path: 'zoom-chart', component: ZoomChartsPageComponent },
   { path: 'amcharts-zoom', component: Amcharts4ZoomChartComponent },
   { path: 'amcharts-zoom-optimized', component: Amcharts4OptimizedZoomChartComponent },
+  { path: 'amcharts-zoom-dynamic-series', component: AmchartsZoomDynamicSeriesComponent },
   { path: '',
     redirectTo: '/zoom-chart',
     pathMatch: 'full'
