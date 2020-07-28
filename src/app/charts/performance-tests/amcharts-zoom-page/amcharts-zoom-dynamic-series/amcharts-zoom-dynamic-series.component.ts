@@ -163,7 +163,7 @@ export class AmchartsZoomDynamicSeriesComponent implements AfterViewInit, OnDest
       this.chart.scrollbarY = new am4charts.XYChartScrollbar();
       this.chart.scrollbarX.events.on('up', this.dateAxisChanged.bind(this));
       // TODO: back to average series
-      this.chart.scrollbarX.events.on('down', this.zoomStarted.bind(this));
+      // this.chart.scrollbarX.events.on('down', this.zoomStarted.bind(this));
     });
   }
 
