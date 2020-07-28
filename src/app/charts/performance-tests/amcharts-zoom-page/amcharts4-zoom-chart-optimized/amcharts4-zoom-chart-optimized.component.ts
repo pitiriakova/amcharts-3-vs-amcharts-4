@@ -47,7 +47,7 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDe
 
   hideRawAndShowAverages() {
     Amcharts4OptimizedZoomChartComponent.dataMode = 'average';
-    const activeRawSeries = this.chart.series.values.filter(s => s.hidden === false);
+    const activeRawSeries = this.chart.series.values.filter(s => s.isHidden === false);
     console.log('currentActiveSeriesIds: ', activeRawSeries);
 
     activeRawSeries.forEach((cas, index) => {
@@ -66,7 +66,7 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDe
   hideAverageAndShowRawData() {
     Amcharts4OptimizedZoomChartComponent.dataMode = 'raw';
 
-    const activeAverageSeries = this.chart.series.values.filter(s => s.hidden === false);
+    const activeAverageSeries = this.chart.series.values.filter(s => s.isHidden === false);
 
     activeAverageSeries.forEach((cas, index) => {
       const currentRawSeries = this.chart.series.values.find(v => v.id + '__average' === cas.id);
@@ -87,50 +87,56 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDe
       const moreThan500pointsToShow = this.checkForPointsCount();
 
       if (moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'average') {
+        console.log('MORE THAN 500 AND AVERAGE');
         const checkedAverageSeries = this.chart.series.values.find(s => s.id === data.id + '__average');
 
         if (checkedAverageSeries) {
-          data.checked ? checkedAverageSeries.show() : checkedAverageSeries.hide();
-          this.chart.invalidateData();
+          (checkedAverageSeries.isHidden || checkedAverageSeries.hidden) ? checkedAverageSeries.show() : checkedAverageSeries.hide();
+          // this.chart.invalidateData();
         } else {
           this.createAverageSeries(data.id, 5);
         }
       }
 
       if (moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
-        this.hideRawAndShowAverages();
+        console.log('MORE THAN 500 AND RAW');
 
         const checkedAverageSeries = this.chart.series.values.find(s => s.id === data.id + '__average');
         if (checkedAverageSeries) {
-          data.checked ? checkedAverageSeries.show() : checkedAverageSeries.hide();
-          this.chart.invalidateData();
+          (checkedAverageSeries.isHidden || checkedAverageSeries.hidden) ? checkedAverageSeries.show() : checkedAverageSeries.hide();
+          // this.chart.invalidateData();
         } else {
           this.createAverageSeries(data.id, 5);
         }
+
+        this.hideRawAndShowAverages();
       }
 
       if (!moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
+
+        console.log('NO MORE THAN 500 AND RAW');
         const checkedRawSeries = this.chart.series.values.find(s => s.id.replace('__average', '') === data.id);
 
         if (checkedRawSeries) {
-          data.checked ? checkedRawSeries.show() : checkedRawSeries.hide();
-          this.chart.invalidateData();
+          (checkedRawSeries.isHidden || checkedRawSeries.hidden) ? checkedRawSeries.show() : checkedRawSeries.hide();
+          // this.chart.invalidateData();
         } else {
           this.createSeries(data.id, 4);
         }
       }
 
       if (!moreThan500pointsToShow && Amcharts4OptimizedZoomChartComponent.dataMode === 'average') {
-        this.hideAverageAndShowRawData();
+        console.log('NO MORE THAN 500 AND AVERAGE');
 
         const checkedRawSeries = this.chart.series.values.find(s => s.id.replace('__average', '') === data.id);
 
         if (checkedRawSeries) {
-          data.checked ? checkedRawSeries.show() : checkedRawSeries.hide();
-          this.chart.invalidateData();
+          (checkedRawSeries.isHidden || checkedRawSeries.hidden) ? checkedRawSeries.show() : checkedRawSeries.hide();
+          // this.chart.invalidateData();
         } else {
           this.createSeries(data.id, 4);
         }
+        this.hideAverageAndShowRawData();
       }
     }
   }
@@ -185,8 +191,8 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDe
     this.dateAxis.skipEmptyPeriods = true;
     // this.dateAxis.groupData = true;
     // this.dateAxis.groupCount = 100;
-    // dateAxis.min = this.chartData[0].timestamp;
-    // dateAxis.max = this.chartData[this.chartData.length - 1].timestamp;
+    this.dateAxis.min = this.chartData[0].timestamp;
+    this.dateAxis.max = this.chartData[this.chartData.length - 1].timestamp;
     this.dateAxis.startLocation = 0;
     this.dateAxis.endLocation = 1;
     this.dateAxis.renderer.grid.template.location = 0;
@@ -194,7 +200,7 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDe
     //   { timeUnit: "second", count: 1 },
     // ]);
 
-    // this.dateAxis.skipRangeEvent = true;
+    this.dateAxis.skipRangeEvent = true;
     // this.dateAxis.trackable = false;
     this.dateAxis.events.on('rangechangeended', (e) => {
       this.minZoom = e.target.minZoomed;
@@ -240,27 +246,8 @@ export class Amcharts4OptimizedZoomChartComponent implements AfterViewInit, OnDe
     });
   }
 
-  switchFromRawToAverages() {
-    Amcharts4OptimizedZoomChartComponent.dataMode = 'average';
-    const activeRawSeries = this.chart.series.values.filter(s => s.hidden === false);
-    console.log('currentActiveSeriesIds: ', activeRawSeries);
-
-    activeRawSeries.forEach((cas, index) => {
-      const currentAverageSeries = this.chart.series.values.find(v => v.id === cas.id + '__average');
-      console.log('currentAverageSeries: ', currentAverageSeries);
-      if (currentAverageSeries) {
-        currentAverageSeries.show();
-        cas.hide();
-      }
-    });
-  }
-
-  switchFromAveragesToRaw() {
-
-  }
-
   checkForPointsCount(): boolean {
-    const currentActiveSeries = this.chart.series.values.filter(s => s.hidden === false);
+    const currentActiveSeries = this.chart.series.values.filter(s => s.isHidden === false);
     let pointsCount = 0;
 
     if (Amcharts4OptimizedZoomChartComponent.dataMode === 'raw') {
